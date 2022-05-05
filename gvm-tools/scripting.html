@@ -1,0 +1,359 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Scripting &#8212; gvm-tools 21.10.1.dev1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.gif"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Glossary" href="glossary.html" />
+    <link rel="prev" title="Configuration" href="config.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="scripting">
+<span id="id1"></span><h1>Scripting<a class="headerlink" href="#scripting" title="Permalink to this headline">¶</a></h1>
+<section id="xml-scripting">
+<span id="id2"></span><h2>XML Scripting<a class="headerlink" href="#xml-scripting" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>XML scripting via <strong class="program">gvm-cli</strong> should only be considered for
+simpler use cases. <a class="reference internal" href="#gvm-scripting"><span class="std std-ref">Greenbone Management Protocol (GMP) or
+Open Scanner Protocol (OSP) scripts</span></a> are often more
+powerful and easier to write.</p>
+</div>
+<p>Scripting via <strong class="program">gvm-cli</strong> is directly based on <a class="reference external" href="https://docs.greenbone.net/API/GMP/gmp.html">GMP</a> and <a class="reference external" href="https://docs.greenbone.net/API/OSP/osp.html">OSP</a>. Both protocols make
+use of XML command requests and corresponding responses.</p>
+<p>A typical example for using GMP is the automatic scan of a new
+system. In the example below, it is assumed that an Intrusion Detection
+System (IDS) that monitors the systems in the Demilitarized Zone (DMZ) and immediately
+discovers new systems and unusual, new TCP ports is in use. If such an
+event is being discovered, the IDS should automatically initiate a scan
+of the new system. This can be done with the help of a script.</p>
+<ol class="arabic">
+<li><p>Starting point is the IP address of the new suspected system. For this IP
+address, a target needs to be created on the <a class="reference internal" href="glossary.html#term-GSM"><span class="xref std std-term">GSM</span></a>.</p>
+<p>If the IP address is saved in the environment variable <span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">IPADDRESS</span></code> by
+the IDS, the respective target can be created:</p>
+</li>
+</ol>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>&gt; gvm-cli socket --xml <span class="s2">&quot;&lt;create_target&gt;&lt;name&gt;Suspect Host&lt;/name&gt;&lt;hosts&gt;&quot;</span><span class="nv">$IPADDRESS</span><span class="s2">&quot;&lt;/hosts&gt;&lt;/create_target&gt;&quot;</span>
+&lt;create_target_response <span class="nv">status</span><span class="o">=</span><span class="s2">&quot;201&quot;</span> <span class="nv">status_text</span><span class="o">=</span><span class="s2">&quot;OK, resource created&quot;</span> <span class="nv">id</span><span class="o">=</span><span class="s2">&quot;e5adc10c-71d0-49fe-aacf-a442ee31d387&quot;</span>/&gt;
+</pre></div>
+</div>
+<p>See <strong class="command">create_target</strong> command for all <a class="reference external" href="https://docs.greenbone.net/API/OMP/omp.html#command_create_target">details</a>.</p>
+<ol class="arabic simple" start="2">
+<li><p>Create a task using the default <em>Full and Fast</em> scan configuration with
+UUID <code class="xref std std-token docutils literal notranslate"><span class="pre">daba56c8-73ec-11df-a475-002264764cea</span></code> and the previously generated
+target:</p></li>
+</ol>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>&gt; gvm-cli socket --xml <span class="s2">&quot;&lt;create_task&gt;&lt;name&gt;Scan Suspect Host&lt;/name&gt;&lt;target id=\&quot;e5adc10c-71d0-49fe-aacf-a442ee31d387\&quot;/&gt;&lt;config id=\&quot;daba56c8-73ec-11df-a475-002264764cea\&quot;/&gt;&lt;scanner id=\&quot;08b69003-5fc2-4037-a479-93b440211c73\&quot;/&gt;&lt;/create_task&gt;&quot;</span>
+&lt;create_task_response <span class="nv">status</span><span class="o">=</span><span class="s2">&quot;201&quot;</span> <span class="nv">status_text</span><span class="o">=</span><span class="s2">&quot;OK, resource created&quot;</span> <span class="nv">id</span><span class="o">=</span><span class="s2">&quot;7249a07c-03e1-4197-99e4-a3a9ab5b7c3b&quot;</span>/&gt;
+</pre></div>
+</div>
+<p>See <strong class="command">create_task</strong> command for all <a class="reference external" href="https://docs.greenbone.net/API/OMP/omp.html#command_create_task">details</a>.</p>
+<ol class="arabic simple" start="3">
+<li><p>Start the task using the UUID return from the last response:</p></li>
+</ol>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>&gt; gvm-cli socket --xml <span class="s2">&quot;&lt;start_task task_id=\&quot;7249a07c-03e1-4197-99e4-a3a9ab5b7c3b\&quot;/&gt;&quot;</span>
+&lt;start_task_response <span class="nv">status</span><span class="o">=</span><span class="s2">&quot;202&quot;</span> <span class="nv">status_text</span><span class="o">=</span><span class="s2">&quot;OK, request submitted&quot;</span>&gt;&lt;report_id&gt;0f9ea6ca-abf5-4139-a772-cb68937cdfbb&lt;/report_id&gt;&lt;/start_task_response&gt;
+</pre></div>
+</div>
+<p>See <strong class="command">start_task</strong> command for all <a class="reference external" href="https://docs.greenbone.net/API/OMP/omp.html#command_start_task">details</a>.</p>
+<p>→ The task is running. The response returns the UUID of the report which will
+contain the results of the scan.</p>
+<ol class="arabic simple" start="4">
+<li><p>Display the current status of the task:</p></li>
+</ol>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>&gt; gvm-cli socket --xml <span class="s2">&quot;&lt;get_tasks task_id=\&quot;7249a07c-03e1-4197-99e4-a3a9ab5b7c3b\&quot;/&gt;&quot;</span>
+&lt;get_tasks_response <span class="nv">status</span><span class="o">=</span><span class="s2">&quot;200&quot;</span> <span class="nv">status_text</span><span class="o">=</span><span class="s2">&quot;OK&quot;</span>&gt;
+...
+&lt;status&gt;Running&lt;/status&gt;&lt;progress&gt;98 ... &lt;/progress&gt;
+...
+&lt;get_tasks_response/&gt;
+</pre></div>
+</div>
+<p>See <strong class="command">get_tasks</strong> command for all <a class="reference external" href="https://docs.greenbone.net/API/OMP/omp.html#command_get_tasks">details</a>.</p>
+<p>→ As soon as the scan is completed, the full report is available and can be
+displayed.</p>
+<ol class="arabic simple" start="5">
+<li><p>Display the full report:</p></li>
+</ol>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>&gt; gvm-cli socket --xml <span class="s2">&quot;&lt;get_reports report_id=\&quot;0f9ea6ca-abf5-4139-a772-cb68937cdfbb\&quot;/&gt;&quot;</span>
+&lt;get_reports_response <span class="nv">status</span><span class="o">=</span><span class="s2">&quot;200&quot;</span> <span class="nv">status_text</span><span class="o">=</span><span class="s2">&quot;OK&quot;</span>&gt;&lt;report <span class="nv">type</span><span class="o">=</span><span class="s2">&quot;scan&quot;</span> <span class="nv">id</span><span class="o">=</span><span class="s2">&quot;0f9ea6ca-abf5-4139-a772-cb68937cdfbb&quot;</span> <span class="nv">format_id</span><span class="o">=</span><span class="s2">&quot;a994b278-1f62-11e1-96ac-406186ea4fc5&quot;</span> <span class="nv">extension</span><span class="o">=</span><span class="s2">&quot;xml&quot;</span> <span class="nv">content_type</span><span class="o">=</span><span class="s2">&quot;text/xml&quot;</span>&gt;
+...
+&lt;/get_reports_response&gt;
+</pre></div>
+</div>
+<p>See <strong class="command">get_reports</strong> command for all <a class="reference external" href="https://docs.greenbone.net/API/OMP/omp.html#command_get_reports">details</a>.</p>
+<ol class="arabic" start="6">
+<li><p>Additionally, the report can be downloaded in a specific report format instead
+of plain XML.</p>
+<p>List all report formats:</p>
+</li>
+</ol>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>&gt; gvm-cli socket --xml <span class="s2">&quot;&lt;get_report_formats/&gt;&quot;</span>
+&lt;get_report_formats_response <span class="nv">status</span><span class="o">=</span><span class="s2">&quot;200&quot;</span> <span class="nv">status_text</span><span class="o">=</span><span class="s2">&quot;OK&quot;</span>&gt;&lt;report_format <span class="nv">id</span><span class="o">=</span><span class="s2">&quot;5057e5cc-b825-11e4-9d0e-28d24461215b&quot;</span>&gt;
+...
+&lt;/get_report_formats_response&gt;
+</pre></div>
+</div>
+<p>See <strong class="command">get_report_formats</strong> command for all <a class="reference external" href="https://docs.greenbone.net/API/OMP/omp.html#command_get_report_formats">details</a>.</p>
+<ol class="arabic" start="7">
+<li><p>Download the report in the desired format.</p>
+<p>Example: download the report as a PDF file:</p>
+</li>
+</ol>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>&gt; gvm-cli socket --xml <span class="s2">&quot;&lt;get_reports report_id=\&quot;0f9ea6ca-abf5-4139-a772-cb68937cdfbb\&quot; format_id=\&quot;c402cc3e-b531-11e1-9163-406186ea4fc5\&quot;/&gt;&quot;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Please be aware that the PDF is returned as <a class="reference external" href="https://en.wikipedia.org/wiki/Base64">base64 encoded</a> content of the
+<em>&lt;get_report_response&gt;&lt;report&gt;</em> element in the XML response.</p>
+</div>
+</section>
+<section id="gvm-scripts">
+<span id="gvm-scripting"></span><h2>GVM Scripts<a class="headerlink" href="#gvm-scripts" title="Permalink to this headline">¶</a></h2>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 2.0.</span></p>
+</div>
+<p>Scripting of <a class="reference internal" href="glossary.html#term-GMP"><span class="xref std std-term">Greenbone Management Protocol (GMP)</span></a> and <a class="reference internal" href="glossary.html#term-OSP"><span class="xref std std-term">Open Scanner Protocol
+(OSP)</span></a> via <strong class="program">gvm-script</strong> or interactively via
+<strong class="program">gvm-pyshell</strong> is based on the <a class="reference external" href="https://python-gvm.readthedocs.io/en/latest/">python-gvm</a> library. Please take a look
+at <a class="reference external" href="https://python-gvm.readthedocs.io/en/latest/">python-gvm</a> for further details about the API.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>By convention, scripts using <a class="reference internal" href="glossary.html#term-GMP"><span class="xref std std-term">GMP</span></a> are called <em>GMP scripts</em> and
+are files with the ending <code class="file docutils literal notranslate"><span class="pre">.gmp.py</span></code>. Accordingly, <em>OSP scripts</em> with the
+ending <code class="file docutils literal notranslate"><span class="pre">.osp.py</span></code> are using <a class="reference internal" href="glossary.html#term-OSP"><span class="xref std std-term">OSP</span></a>. Technically both protocols could be
+used in one single script file.</p>
+</div>
+<p>The following sections are using the same example as it was used in
+<a class="reference internal" href="#xml-scripting"><span class="std std-ref">XML Scripting</span></a> where it was assumed that an Intrusion Detection
+System (IDS) that monitors the systems in the Demilitarized Zone (DMZ) and immediately discovers
+new systems and unusual, new TCP ports is in use. The IDS will provide the
+IP address of a new system to the GMP script.</p>
+<ol class="arabic simple">
+<li><p>Define the function that should be called when the script is
+started by adding the following code to a file named <code class="file docutils literal notranslate"><span class="pre">scan-new-system.gmp.py</span></code>:</p></li>
+</ol>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__gmp__&#39;</span><span class="p">:</span>
+  <span class="n">main</span><span class="p">(</span><span class="n">gmp</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>→ The script is only called when being run as a GMP script. The
+<em class="dfn">gmp</em> and <em class="dfn">args</em> variables are provided by <strong class="program">gvm-cli</strong> or
+<strong class="program">gvm-pyshell</strong>. <em class="dfn">args</em> contains arguments for the script, e.g., the
+user name and password for the GMP connection. The most important aspect about the example
+script is that it contains the <em class="dfn">argv</em> property with the list of additional script
+specific arguments. The <em class="dfn">gmp</em> variable contains a connected and
+authenticated instance of a <a class="reference external" href="https://python-gvm.readthedocs.io/en/latest/api/gmpv9.html#protocol">Greenbone Management Protocol class</a>.</p>
+<ol class="arabic simple" start="2">
+<li><p>The main function begins with the following code lines:</p></li>
+</ol>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">gmp</span><span class="p">:</span> <span class="n">Gmp</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="n">Namespace</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+  <span class="c1"># check if IP address is provided to the script</span>
+  <span class="c1"># argv[0] contains the script name</span>
+  <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Missing IP address argument&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mi">1</span>
+
+  <span class="n">ipaddress</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>→ The main function stores the first argument passed to the script as the <span class="target" id="index-1"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">ipaddress</span></code>
+variable.</p>
+<p>3. Add the logic to create a target, create a new scan task for the target,
+start the task and print the corresponding report ID:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">ipaddress</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">target_id</span> <span class="o">=</span> <span class="n">create_target</span><span class="p">(</span><span class="n">gmp</span><span class="p">,</span> <span class="n">ipaddress</span><span class="p">)</span>
+
+<span class="n">full_and_fast_scan_config_id</span> <span class="o">=</span> <span class="s1">&#39;daba56c8-73ec-11df-a475-002264764cea&#39;</span>
+<span class="n">openvas_scanner_id</span> <span class="o">=</span> <span class="s1">&#39;08b69003-5fc2-4037-a479-93b440211c73&#39;</span>
+<span class="n">task_id</span> <span class="o">=</span> <span class="n">create_task</span><span class="p">(</span>
+    <span class="n">gmp</span><span class="p">,</span>
+    <span class="n">ipaddress</span><span class="p">,</span>
+    <span class="n">target_id</span><span class="p">,</span>
+    <span class="n">full_and_fast_scan_config_id</span><span class="p">,</span>
+    <span class="n">openvas_scanner_id</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">report_id</span> <span class="o">=</span> <span class="n">start_task</span><span class="p">(</span><span class="n">gmp</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;Started scan of host </span><span class="si">{</span><span class="n">ipaddress</span><span class="si">}</span><span class="s2">. Corresponding report ID is </span><span class="si">{</span><span class="n">report_id</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>For creating the target from an IP address (DNS name is also possible), the
+following is used. Since target names must be unique, the current date and time in
+ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm) is added:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_target</span><span class="p">(</span><span class="n">gmp</span><span class="p">,</span> <span class="n">ipaddress</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">datetime</span>
+
+    <span class="c1"># create a unique name by adding the current datetime</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Suspect Host </span><span class="si">{</span><span class="n">ipaddress</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">gmp</span><span class="o">.</span><span class="n">create_target</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">hosts</span><span class="o">=</span><span class="p">[</span><span class="n">ipaddress</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The function for creating the task is defined as:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_task</span><span class="p">(</span><span class="n">gmp</span><span class="p">,</span> <span class="n">ipaddress</span><span class="p">,</span> <span class="n">target_id</span><span class="p">,</span> <span class="n">scan_config_id</span><span class="p">,</span> <span class="n">scanner_id</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Scan Suspect Host </span><span class="si">{</span><span class="n">ipaddress</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">gmp</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">config_id</span><span class="o">=</span><span class="n">scan_config_id</span><span class="p">,</span>
+        <span class="n">target_id</span><span class="o">=</span><span class="n">target_id</span><span class="p">,</span>
+        <span class="n">scanner_id</span><span class="o">=</span><span class="n">scanner_id</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Finally, the function to start the task and get the report ID:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">start_task</span><span class="p">(</span><span class="n">gmp</span><span class="p">,</span> <span class="n">task_id</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">gmp</span><span class="o">.</span><span class="n">start_task</span><span class="p">(</span><span class="n">task_id</span><span class="p">)</span>
+    <span class="c1"># the response is</span>
+    <span class="c1"># &lt;start_task_response&gt;&lt;report_id&gt;id&lt;/report_id&gt;&lt;/start_task_response&gt;</span>
+    <span class="k">return</span> <span class="n">response</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span>
+</pre></div>
+</div>
+<p>For getting a PDF document of the report, a second script <code class="file docutils literal notranslate"><span class="pre">pdf-report.gmp.py</span></code>
+can be used:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">base64</span> <span class="kn">import</span> <span class="n">b64decode</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">gmp</span><span class="p">:</span> <span class="n">Gmp</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="n">Namespace</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="c1"># check if report id and PDF filename are provided to the script</span>
+    <span class="c1"># argv[0] contains the script name</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Please provide report ID and PDF file name as script arguments&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">1</span>
+
+    <span class="n">report_id</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">pdf_filename</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="n">pdf_report_format_id</span> <span class="o">=</span> <span class="s2">&quot;c402cc3e-b531-11e1-9163-406186ea4fc5&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">gmp</span><span class="o">.</span><span class="n">get_report</span><span class="p">(</span>
+        <span class="n">report_id</span><span class="o">=</span><span class="n">report_id</span><span class="p">,</span> <span class="n">report_format_id</span><span class="o">=</span><span class="n">pdf_report_format_id</span>
+    <span class="p">)</span>
+
+    <span class="n">report_element</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1"># get the full content of the report element</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">report_element</span><span class="o">.</span><span class="n">itertext</span><span class="p">())</span>
+
+    <span class="c1"># convert content to 8-bit ASCII bytes</span>
+    <span class="n">binary_base64_encoded_pdf</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span>
+    <span class="c1"># decode base64</span>
+    <span class="n">binary_pdf</span> <span class="o">=</span> <span class="n">b64decode</span><span class="p">(</span><span class="n">binary_base64_encoded_pdf</span><span class="p">)</span>
+
+    <span class="c1"># write to file and support ~ in filename path</span>
+    <span class="n">pdf_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">pdf_filename</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span>
+    <span class="n">pdf_path</span><span class="o">.</span><span class="n">write_bytes</span><span class="p">(</span><span class="n">binary_pdf</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Done.&#39;</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__gmp__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">(</span><span class="n">gmp</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="example-scripts">
+<h2>Example Scripts<a class="headerlink" href="#example-scripts" title="Permalink to this headline">¶</a></h2>
+<p>All example scripts can be found at <a class="reference external" href="https://github.com/greenbone/gvm-tools/tree/master/scripts">GitHub</a>.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><p class="logo">
+  <a href="index.html">
+    <img
+      class="logo"
+      src="_static/greenbone.png"
+      alt="Greenbone Logo"
+    />
+    <h1 class="logo logo-name">gvm-tools</h1>
+  </a>
+</p>
+<p class="description">
+  Remote Control of Your Greenbone Vulnerability Manager (GVM)
+</p>
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Scripting</a><ul>
+<li><a class="reference internal" href="#xml-scripting">XML Scripting</a></li>
+<li><a class="reference internal" href="#gvm-scripts">GVM Scripts</a></li>
+<li><a class="reference internal" href="#example-scripts">Example Scripts</a></li>
+</ul>
+</li>
+</ul>
+
+  </div><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="config.html" title="previous chapter">Configuration</a></li>
+      <li>Next: <a href="glossary.html" title="next chapter">Glossary</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018-2020, Greenbone Networks GmbH.
+      
+    </div>
+
+    
+    <a href="https://github.com/greenbone/gvm-tools" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

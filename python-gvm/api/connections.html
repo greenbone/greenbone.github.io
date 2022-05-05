@@ -1,0 +1,396 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Connections &#8212; python-gvm 21.11.1.dev1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.gif"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Transforms" href="transforms.html" />
+    <link rel="prev" title="Main" href="main.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="connections">
+<span id="id1"></span><h1>Connections<a class="headerlink" href="#connections" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-gvm.connections"></span><p>Module for connections to GVM server daemons like gvmd and ospd.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="gvm.connections.GvmConnection">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gvm.connections.</span></span><span class="sig-name descname"><span class="pre">GvmConnection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">60</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gvm.connections.GvmConnection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for establishing a connection to a remote server daemon.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>timeout</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]) – Timeout in seconds for the connection. None to
+wait indefinitely</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gvm.connections.GvmConnection.connect">
+<span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gvm.connections.GvmConnection.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Establish a connection to a remote server</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gvm.connections.GvmConnection.disconnect">
+<span class="sig-name descname"><span class="pre">disconnect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gvm.connections.GvmConnection.disconnect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disconnect and close the connection to the remote server</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gvm.connections.GvmConnection.finish_send">
+<span class="sig-name descname"><span class="pre">finish_send</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gvm.connections.GvmConnection.finish_send" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicate to the remote server you are done with sending data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gvm.connections.GvmConnection.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gvm.connections.GvmConnection.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read data from the remote server</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>data as utf-8 encoded string</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gvm.connections.GvmConnection.send">
+<span class="sig-name descname"><span class="pre">send</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gvm.connections.GvmConnection.send" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send data to the connected remote server</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – Data to be send to the server. Either utf-8 encoded string or
+bytes.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gvm.connections.SSHConnection">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gvm.connections.</span></span><span class="sig-name descname"><span class="pre">SSHConnection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">60</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hostname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'127.0.0.1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">22</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">username</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gmp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">known_hosts_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gvm.connections.SSHConnection" title="Permalink to this definition">¶</a></dt>
+<dd><p>SSH Class to connect, read and write from GVM via SSH</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timeout</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]) – Timeout in seconds for the connection.</p></li>
+<li><p><strong>hostname</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – DNS name or IP address of the remote server. Default is
+127.0.0.1.</p></li>
+<li><p><strong>port</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]) – Port of the remote SSH server. Default is port 22.</p></li>
+<li><p><strong>username</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – Username to use for SSH login. Default is “gmp”.</p></li>
+<li><p><strong>password</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – Passwort to use for SSH login. Default is “”.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gvm.connections.SSHConnection.connect">
+<span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gvm.connections.SSHConnection.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect to the SSH server and authenticate to it</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gvm.connections.SSHConnection.disconnect">
+<span class="sig-name descname"><span class="pre">disconnect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gvm.connections.SSHConnection.disconnect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disconnect and close the connection to the remote server</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gvm.connections.SSHConnection.finish_send">
+<span class="sig-name descname"><span class="pre">finish_send</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gvm.connections.SSHConnection.finish_send" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicate to the remote server you are done with sending data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gvm.connections.SSHConnection.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gvm.connections.SSHConnection.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read data from the remote server</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>data as utf-8 encoded string</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gvm.connections.SSHConnection.send">
+<span class="sig-name descname"><span class="pre">send</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gvm.connections.SSHConnection.send" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send data to the connected remote server</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – Data to be send to the server. Either utf-8 encoded string or
+bytes.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gvm.connections.TLSConnection">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gvm.connections.</span></span><span class="sig-name descname"><span class="pre">TLSConnection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">certfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cafile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hostname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'127.0.0.1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9390</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">60</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gvm.connections.TLSConnection" title="Permalink to this definition">¶</a></dt>
+<dd><p>TLS class to connect, read and write from a remote GVM daemon via TLS
+secured socket.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timeout</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]) – Timeout in seconds for the connection.</p></li>
+<li><p><strong>hostname</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – DNS name or IP address of the remote TLS server.</p></li>
+<li><p><strong>port</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]) – Port for the TLS connection. Default is 9390.</p></li>
+<li><p><strong>certfile</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – Path to PEM encoded certificate file. See
+<a class="reference external" href="https://docs.python.org/3/library/ssl.html#certificates">python certificates</a> for details.</p></li>
+<li><p><strong>cafile</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – Path to PEM encoded CA file. See <a class="reference external" href="https://docs.python.org/3/library/ssl.html#certificates">python certificates</a>
+for details.</p></li>
+<li><p><strong>keyfile</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – Path to PEM encoded private key. See <a class="reference external" href="https://docs.python.org/3/library/ssl.html#certificates">python certificates</a>
+for details.</p></li>
+<li><p><strong>password</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – Password for the private key. If the password argument is not
+specified and a password is required it will be interactively prompt
+the user for a password.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gvm.connections.TLSConnection.connect">
+<span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gvm.connections.TLSConnection.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Establish a connection to a remote server</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gvm.connections.TLSConnection.disconnect">
+<span class="sig-name descname"><span class="pre">disconnect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gvm.connections.TLSConnection.disconnect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disconnect and close the connection to the remote server</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gvm.connections.TLSConnection.finish_send">
+<span class="sig-name descname"><span class="pre">finish_send</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gvm.connections.TLSConnection.finish_send" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicate to the remote server you are done with sending data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gvm.connections.TLSConnection.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gvm.connections.TLSConnection.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read data from the remote server</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>data as utf-8 encoded string</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gvm.connections.TLSConnection.send">
+<span class="sig-name descname"><span class="pre">send</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gvm.connections.TLSConnection.send" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send data to the connected remote server</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – Data to be send to the server. Either utf-8 encoded string or
+bytes.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gvm.connections.UnixSocketConnection">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gvm.connections.</span></span><span class="sig-name descname"><span class="pre">UnixSocketConnection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/var/run/gvmd.sock'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">60</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gvm.connections.UnixSocketConnection" title="Permalink to this definition">¶</a></dt>
+<dd><p>UNIX-Socket class to connect, read, write from a GVM server daemon via
+direct communicating UNIX-Socket</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – Path to the socket. Default is “/var/run/gvmd.sock”.</p></li>
+<li><p><strong>timeout</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]) – Timeout in seconds for the connection. Default is 60 seconds.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gvm.connections.UnixSocketConnection.connect">
+<span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gvm.connections.UnixSocketConnection.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect to the UNIX socket</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gvm.connections.UnixSocketConnection.disconnect">
+<span class="sig-name descname"><span class="pre">disconnect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gvm.connections.UnixSocketConnection.disconnect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disconnect and close the connection to the remote server</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gvm.connections.UnixSocketConnection.finish_send">
+<span class="sig-name descname"><span class="pre">finish_send</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gvm.connections.UnixSocketConnection.finish_send" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicate to the remote server you are done with sending data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gvm.connections.UnixSocketConnection.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gvm.connections.UnixSocketConnection.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read data from the remote server</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>data as utf-8 encoded string</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gvm.connections.UnixSocketConnection.send">
+<span class="sig-name descname"><span class="pre">send</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gvm.connections.UnixSocketConnection.send" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send data to the connected remote server</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – Data to be send to the server. Either utf-8 encoded string or
+bytes.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gvm.connections.DebugConnection">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gvm.connections.</span></span><span class="sig-name descname"><span class="pre">DebugConnection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connection</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gvm.connections.DebugConnection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper around a connection for debugging purposes</p>
+<p>Allows to debug the connection flow including send and read data. Internally
+it uses the python <a class="reference external" href="https://docs.python.org/3/library/logging.html">logging</a> framework to create debug messages. Please
+take a look at <a class="reference external" href="https://docs.python.org/3/howto/logging.html#logging-basic-tutorial">the logging tutorial</a>
+for further details.</p>
+<p>Usage example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+
+<span class="n">socketconnection</span> <span class="o">=</span> <span class="n">UnixSocketConnection</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/var/run/gvm.sock&#39;</span><span class="p">)</span>
+<span class="n">connection</span> <span class="o">=</span> <span class="n">DebugConnection</span><span class="p">(</span><span class="n">socketconnection</span><span class="p">)</span>
+<span class="n">gmp</span> <span class="o">=</span> <span class="n">Gmp</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>connection</strong> (<a class="reference internal" href="#gvm.connections.GvmConnection" title="gvm.connections.GvmConnection"><code class="xref py py-class docutils literal notranslate"><span class="pre">GvmConnection</span></code></a>) – GvmConnection to observe</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><p class="logo">
+  <a href="../index.html">
+    <img
+      class="logo"
+      src="../_static/greenbone.png"
+      alt="Greenbone Logo"
+    />
+    <h1 class="logo logo-name">python-gvm</h1>
+  </a>
+</p>
+<p class="description">
+  Remote Control of Your Greenbone Vulnerability Manager (GVM)
+</p><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="api.html">Developer Interface</a><ul>
+      <li>Previous: <a href="main.html" title="previous chapter">Main</a></li>
+      <li>Next: <a href="transforms.html" title="next chapter">Transforms</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018 - 2021, Greenbone Networks GmbH.
+      
+    </div>
+
+    
+    <a href="https://github.com/greenbone/python-gvm" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

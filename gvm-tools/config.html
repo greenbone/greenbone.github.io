@@ -1,0 +1,228 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Configuration &#8212; gvm-tools 21.10.1.dev1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.gif"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Scripting" href="scripting.html" />
+    <link rel="prev" title="Provided Tools" href="tools.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="configuration">
+<span id="config"></span><h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 2.0.</span></p>
+</div>
+<p>By default, <strong class="program">gvm-tools</strong> <a class="reference internal" href="tools.html#tools"><span class="std std-ref">programs</span></a> are evaluating the
+<code class="file docutils literal notranslate"><span class="pre">~/.config/gvm-tools.conf</span></code>
+<a class="reference external" href="https://docs.python.org/3/library/configparser.html#supported-ini-file-structure">ini style</a>
+config file since version 2.0. The name of the used config file can be set using the
+<strong class="command">-c/--config</strong> command line switch.</p>
+<section id="settings">
+<h2>Settings<a class="headerlink" href="#settings" title="Permalink to this headline">¶</a></h2>
+<p>The configuration file consists of sections, each led by a <code class="code docutils literal notranslate"><span class="pre">[section]</span></code>
+header, followed by key/value entries separated by a <code class="code docutils literal notranslate"><span class="pre">=</span></code> character.
+Whitespaces between key and value are ignored, i.e., <code class="code docutils literal notranslate"><span class="pre">key</span> <span class="pre">=</span> <span class="pre">value</span></code> is the
+same as <code class="code docutils literal notranslate"><span class="pre">key=value</span></code>.</p>
+<p>Currently five sections are evaluated:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#main-section"><span class="std std-ref">Main section</span></a></p></li>
+<li><p><a class="reference internal" href="#gmp-section"><span class="std std-ref">GMP section</span></a></p></li>
+<li><p><a class="reference internal" href="#socket-config-section"><span class="std std-ref">Socket section</span></a></p></li>
+<li><p><a class="reference internal" href="#tls-config-section"><span class="std std-ref">TLS section</span></a></p></li>
+<li><p><a class="reference internal" href="#ssh-config-section"><span class="std std-ref">SSH section</span></a></p></li>
+</ul>
+<p class="rubric" id="main-section">Main Section</p>
+<p>The main section allows changing the default connection timeout besides
+defining variables for <a class="reference internal" href="#interpolation"><span class="std std-ref">Interpolation</span></a>.</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[main]</span><span class="w"></span>
+<span class="na">timeout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">60</span><span class="w"></span>
+</pre></div>
+</div>
+<p class="rubric" id="gmp-section">GMP Section</p>
+<p>The GMP section allows setting the default user name and password for
+<a class="reference external" href="https://community.greenbone.net/t/about-the-greenbone-management-protocol-gmp-category/83">Greenbone Management Protocol (GMP)</a>
+based communication.</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[gmp]</span><span class="w"></span>
+<span class="na">username</span><span class="o">=</span><span class="s">gmpuser</span><span class="w"></span>
+<span class="na">password</span><span class="o">=</span><span class="s">gmppassword</span><span class="w"></span>
+</pre></div>
+</div>
+<p class="rubric" id="socket-config-section">Socket Section</p>
+<p>This section is only relevant if the <a class="reference internal" href="connectiontypes.html#socket-connection-type"><span class="std std-ref">socket connection type</span></a> is used.</p>
+<p>The socket section allows setting the default path to the Unix Domain socket of
+<a class="reference internal" href="glossary.html#term-gvmd"><span class="xref std std-term">gvmd</span></a> or <a class="reference internal" href="glossary.html#term-openvasmd"><span class="xref std std-term">openvasmd</span></a> respectively. It must not be confused with the
+socket path to the redis server used by <a class="reference internal" href="glossary.html#term-openvassd"><span class="xref std std-term">openvassd</span></a>.</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[unixsocket]</span><span class="w"></span>
+<span class="na">socketpath</span><span class="o">=</span><span class="s">/var/run/gvmd.sock</span><span class="w"></span>
+</pre></div>
+</div>
+<p class="rubric" id="tls-config-section">TLS Section</p>
+<p>This section is only relevant if the <a class="reference internal" href="connectiontypes.html#tls-connection-type"><span class="std std-ref">TLS connection type</span></a> is used (default for accessing <a class="reference internal" href="glossary.html#term-openvasmd"><span class="xref std std-term">openvasmd</span></a>
+on <a class="reference internal" href="glossary.html#term-GOS"><span class="xref std std-term">GOS</span></a> 3.1).</p>
+<p>The TLS section allows setting the default port, TLS certificate file, TLS key
+file and TLS certificate authority file.</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[tls]</span><span class="w"></span>
+<span class="na">port</span><span class="o">=</span><span class="s">1234</span><span class="w"></span>
+<span class="na">certfile</span><span class="o">=</span><span class="s">/path/to/tls.cert</span><span class="w"></span>
+<span class="na">keyfile</span><span class="o">=</span><span class="s">/path/to/tls.key</span><span class="w"></span>
+<span class="na">cafile</span><span class="o">=</span><span class="s">/path/to/tls.ca</span><span class="w"></span>
+</pre></div>
+</div>
+<p class="rubric" id="ssh-config-section">SSH Section</p>
+<p>This section is only relevant if the <a class="reference internal" href="connectiontypes.html#ssh-connection-type"><span class="std std-ref">SSH connection type</span></a>
+is used (default for accessing <a class="reference internal" href="glossary.html#term-openvasmd"><span class="xref std std-term">openvasmd</span></a> on <a class="reference internal" href="glossary.html#term-GOS"><span class="xref std std-term">GOS</span></a> 4 and beyond).</p>
+<p>The SSH section allows setting the default SSH port, SSH user name and SSH
+password.</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[ssh]</span><span class="w"></span>
+<span class="na">username</span><span class="o">=</span><span class="s">sshuser</span><span class="w"></span>
+<span class="na">password</span><span class="o">=</span><span class="s">sshpassword</span><span class="w"></span>
+<span class="na">port</span><span class="o">=</span><span class="s">2222</span><span class="w"></span>
+</pre></div>
+</div>
+<p class="rubric">Comments</p>
+<p>Configuration files may also contain comments by using the special character
+<code class="code docutils literal notranslate"><span class="pre">#</span></code>. A comment should be placed on a separate line above or below the
+setting.</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[main]</span><span class="w"></span>
+<span class="c1"># connection timeout of 120 seconds</span><span class="w"></span>
+<span class="na">timeout</span><span class="o">=</span><span class="s">120</span><span class="w"></span>
+</pre></div>
+</div>
+<p class="rubric" id="interpolation">Interpolation</p>
+<p>The configuration file also supports the <a class="reference external" href="https://docs.python.org/3/library/configparser.html#interpolation-of-values">interpolation of values</a>.
+It is possible to define values in the <code class="code docutils literal notranslate"><span class="pre">[main]</span></code> section and reference
+them via a <code class="code docutils literal notranslate"><span class="pre">%(&lt;variablename&gt;)s</span></code> syntax. Additionally, values of the
+same section can be referenced.</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[main]</span><span class="w"></span>
+<span class="na">my_first_name</span><span class="o">=</span><span class="s">John</span><span class="w"></span>
+
+<span class="k">[gmp]</span><span class="w"></span>
+<span class="na">my_last_name</span><span class="o">=</span><span class="s">Smith</span><span class="w"></span>
+<span class="na">username</span><span class="o">=</span><span class="s">%(my_first_name)s%(my_last_name)s</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Using this syntax will set the gmp user name setting to <cite>JohnSmith</cite>.</p>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>Full example configuration:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[main]</span><span class="w"></span>
+<span class="c1"># increased timeout to 5 minutes</span><span class="w"></span>
+<span class="na">timeout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">300</span><span class="w"></span>
+<span class="na">tls_path</span><span class="o">=</span><span class="s">/data/tls</span><span class="w"></span>
+<span class="na">default_user</span><span class="o">=</span><span class="s">johnsmith</span><span class="w"></span>
+
+<span class="k">[gmp]</span><span class="w"></span>
+<span class="na">username</span><span class="o">=</span><span class="s">%(default_user)s</span><span class="w"></span>
+<span class="na">password</span><span class="o">=</span><span class="s">choo4Gahdi2e</span><span class="w"></span>
+
+<span class="k">[unixsocket]</span><span class="w"></span>
+<span class="na">socketpath</span><span class="o">=</span><span class="s">/var/run/gvmd.sock</span><span class="w"></span>
+
+<span class="k">[tls]</span><span class="w"></span>
+<span class="na">port</span><span class="o">=</span><span class="s">1234</span><span class="w"></span>
+<span class="na">certfile</span><span class="o">=</span><span class="s">%(tls_path)s/tls.cert</span><span class="w"></span>
+<span class="na">keyfile</span><span class="o">=</span><span class="s">%(tls_path)s/tls.key</span><span class="w"></span>
+<span class="na">cafile</span><span class="o">=</span><span class="s">%(tls_path)s/tls.ca</span><span class="w"></span>
+
+<span class="k">[ssh]</span><span class="w"></span>
+<span class="na">username</span><span class="o">=</span><span class="s">%(default_user)s</span><span class="w"></span>
+<span class="na">password</span><span class="o">=</span><span class="s">Poa8Ies1iJee</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><p class="logo">
+  <a href="index.html">
+    <img
+      class="logo"
+      src="_static/greenbone.png"
+      alt="Greenbone Logo"
+    />
+    <h1 class="logo logo-name">gvm-tools</h1>
+  </a>
+</p>
+<p class="description">
+  Remote Control of Your Greenbone Vulnerability Manager (GVM)
+</p>
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Configuration</a><ul>
+<li><a class="reference internal" href="#settings">Settings</a></li>
+<li><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+</ul>
+
+  </div><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="tools.html" title="previous chapter">Provided Tools</a></li>
+      <li>Next: <a href="scripting.html" title="next chapter">Scripting</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018-2020, Greenbone Networks GmbH.
+      
+    </div>
+
+    
+    <a href="https://github.com/greenbone/gvm-tools" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

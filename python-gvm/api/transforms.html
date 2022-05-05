@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Transforms &#8212; python-gvm 21.11.1.dev1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.gif"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Protocols" href="protocols.html" />
+    <link rel="prev" title="Connections" href="connections.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="transforms">
+<span id="id1"></span><h1>Transforms<a class="headerlink" href="#transforms" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-gvm.transforms"></span><p>Module for transforming responses</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="gvm.transforms.CheckCommandTransform">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gvm.transforms.</span></span><span class="sig-name descname"><span class="pre">CheckCommandTransform</span></span><a class="headerlink" href="#gvm.transforms.CheckCommandTransform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the response code of a response and raise GmpError if
+response was an error response</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gvm.transforms.EtreeCheckCommandTransform">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gvm.transforms.</span></span><span class="sig-name descname"><span class="pre">EtreeCheckCommandTransform</span></span><a class="headerlink" href="#gvm.transforms.EtreeCheckCommandTransform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform a response into a lxml.etree root element and raise GmpError if
+response was an error response</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gvm.transforms.EtreeTransform">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gvm.transforms.</span></span><span class="sig-name descname"><span class="pre">EtreeTransform</span></span><a class="headerlink" href="#gvm.transforms.EtreeTransform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform a response into a lxml.etree root element</p>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><p class="logo">
+  <a href="../index.html">
+    <img
+      class="logo"
+      src="../_static/greenbone.png"
+      alt="Greenbone Logo"
+    />
+    <h1 class="logo logo-name">python-gvm</h1>
+  </a>
+</p>
+<p class="description">
+  Remote Control of Your Greenbone Vulnerability Manager (GVM)
+</p><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="api.html">Developer Interface</a><ul>
+      <li>Previous: <a href="connections.html" title="previous chapter">Connections</a></li>
+      <li>Next: <a href="protocols.html" title="next chapter">Protocols</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018 - 2021, Greenbone Networks GmbH.
+      
+    </div>
+
+    
+    <a href="https://github.com/greenbone/python-gvm" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

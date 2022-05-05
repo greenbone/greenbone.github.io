@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Connection Types &#8212; gvm-tools 21.10.1.dev1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.gif"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Provided Tools" href="tools.html" />
+    <link rel="prev" title="Installation of gvm-tools" href="install.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="connection-types">
+<span id="id1"></span><h1>Connection Types<a class="headerlink" href="#connection-types" title="Permalink to this headline">¶</a></h1>
+<p>Before being able to talk to a remote <a class="reference internal" href="glossary.html#term-GMP"><span class="xref std std-term">GMP</span></a> or <a class="reference internal" href="glossary.html#term-OSP"><span class="xref std std-term">OSP</span></a> server using
+one of the <a class="reference internal" href="tools.html#tools"><span class="std std-ref">provided command line clients</span></a>, the user
+has to choose a connection type for establishing a communication channel.
+Currently three different connection types are supported for being used as
+transport protocol:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference internal" href="#tls-connection-type"><span class="std std-ref">TLS – tls</span></a></p></li>
+<li><p><a class="reference internal" href="#ssh-connection-type"><span class="std std-ref">SSH – ssh</span></a></p></li>
+<li><p><a class="reference internal" href="#socket-connection-type"><span class="std std-ref">Unix Domain Socket – socket</span></a></p></li>
+</ul>
+</div></blockquote>
+<p>For the most common use case (querying <a class="reference internal" href="glossary.html#term-openvasmd"><span class="xref std std-term">openvasmd</span></a>/<a class="reference internal" href="glossary.html#term-gvmd"><span class="xref std std-term">gvmd</span></a> via
+<a class="reference internal" href="glossary.html#term-GMP"><span class="xref std std-term">GMP</span></a> on the same host) the <a class="reference internal" href="#socket-connection-type"><span class="std std-ref">socket connection</span></a> should be chosen. The other connection types require
+some setup and possible adjustments at the server side, if no <a class="reference internal" href="glossary.html#term-GOS"><span class="xref std std-term">Greenbone OS</span></a>
+based system is used.</p>
+<section id="using-a-unix-domain-socket">
+<span id="socket-connection-type"></span><h2>Using a Unix Domain Socket<a class="headerlink" href="#using-a-unix-domain-socket" title="Permalink to this headline">¶</a></h2>
+<p>The Unix Domain Socket is the default connection type of <a class="reference internal" href="glossary.html#term-gvmd"><span class="xref std std-term">gvmd</span></a> in the
+<a class="reference internal" href="glossary.html#term-GSE"><span class="xref std std-term">Greenbone Source Edition</span></a>. It is only usable when running the
+client tool on the same host as the daemon.</p>
+<p>The location and name of the Unix Domain Socket provided by
+<a class="reference internal" href="glossary.html#term-gvmd"><span class="xref std std-term">gvmd</span></a>/<a class="reference internal" href="glossary.html#term-openvasmd"><span class="xref std std-term">openvasmd</span></a> highly depends on the environment and
+<a class="reference internal" href="glossary.html#term-GVM"><span class="xref std std-term">GVM</span></a> installation. Additionally, its name changed from <code class="file docutils literal notranslate"><span class="pre">openvasmd.sock</span></code> in
+<a class="reference internal" href="glossary.html#term-GVM9"><span class="xref std std-term">GVM 9</span></a> to <code class="file docutils literal notranslate"><span class="pre">gvmd.sock</span></code> in <a class="reference internal" href="glossary.html#term-GVM10"><span class="xref std std-term">GVM 10</span></a>.</p>
+<p>For <a class="reference internal" href="glossary.html#term-GOS"><span class="xref std std-term">GOS 4</span></a> the path is either <code class="file docutils literal notranslate"><span class="pre">/run/openvas/openvasmd.sock</span></code> or
+<code class="file docutils literal notranslate"><span class="pre">/usr/share/openvas/gsa/classic/openvasmd.sock</span></code> and for
+<a class="reference internal" href="glossary.html#term-GOS"><span class="xref std std-term">GOS 5</span></a> the path is either <code class="file docutils literal notranslate"><span class="pre">/run/gvm/gvmd.sock</span></code> or
+<code class="file docutils literal notranslate"><span class="pre">/usr/share/gvm/gsad/web/gvmd.sock</span></code>.</p>
+<p><a class="reference internal" href="glossary.html#term-OSPd"><span class="xref std std-term">OSPd based scanners</span></a> may be accessed via Unix Domain Sockets as well.
+The location and name of these sockets is configurable and depends on the used
+OSPd scanner implementation.</p>
+<div class="admonition warning" id="don-t-use-sudo">
+<p class="admonition-title">Warning</p>
+<p>Accessing a Unix Domain Socket requires sufficient Unix file permissions for
+the user running the <a class="reference internal" href="tools.html#tools"><span class="std std-ref">command line interface tool</span></a>.</p>
+<p>Please do not start a tool as <strong>root</strong> user via <strong class="command">sudo</strong> or <strong class="command">su</strong> only to
+be able to access the socket path. Instead, adjust the
+socket file permissions, e.g. by setting the <strong class="command">--listen-owner</strong>,
+<strong class="command">--listen-group</strong> or <strong class="command">--listen-mode</strong> arguments of
+<a class="reference internal" href="glossary.html#term-gvmd"><span class="xref std std-term">gvmd</span></a>.</p>
+</div>
+</section>
+<section id="using-tls">
+<span id="tls-connection-type"></span><h2>Using TLS<a class="headerlink" href="#using-tls" title="Permalink to this headline">¶</a></h2>
+<p>The TLS connection type was the default connection type for remote and local
+communication in <a class="reference internal" href="glossary.html#term-GOS"><span class="xref std std-term">GOS 3.1</span></a> and before. It is used to secure the
+transport protocol connection of <a class="reference internal" href="glossary.html#term-GMP"><span class="xref std std-term">GMP</span></a> or <a class="reference internal" href="glossary.html#term-OSP"><span class="xref std std-term">OSP</span></a>. It requires to
+provide a TLS certificate file, TLS key file and TLS certificate authority file.</p>
+</section>
+<section id="using-ssh">
+<span id="ssh-connection-type"></span><h2>Using SSH<a class="headerlink" href="#using-ssh" title="Permalink to this headline">¶</a></h2>
+<p>Since <a class="reference internal" href="glossary.html#term-GOS"><span class="xref std std-term">GOS 4</span></a>, SSH is the default connection type for secure remote
+communication with the manager daemon via <a class="reference internal" href="glossary.html#term-GMP"><span class="xref std std-term">GMP</span></a>. The <a class="reference internal" href="glossary.html#term-GMP"><span class="xref std std-term">Greenbone
+Management Protocol</span></a> is tunneled through SSH and forwarded to
+<a class="reference internal" href="glossary.html#term-gvmd"><span class="xref std std-term">gvmd</span></a>/<a class="reference internal" href="glossary.html#term-openvasmd"><span class="xref std std-term">openvasmd</span></a>.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><p class="logo">
+  <a href="index.html">
+    <img
+      class="logo"
+      src="_static/greenbone.png"
+      alt="Greenbone Logo"
+    />
+    <h1 class="logo logo-name">gvm-tools</h1>
+  </a>
+</p>
+<p class="description">
+  Remote Control of Your Greenbone Vulnerability Manager (GVM)
+</p>
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Connection Types</a><ul>
+<li><a class="reference internal" href="#using-a-unix-domain-socket">Using a Unix Domain Socket</a></li>
+<li><a class="reference internal" href="#using-tls">Using TLS</a></li>
+<li><a class="reference internal" href="#using-ssh">Using SSH</a></li>
+</ul>
+</li>
+</ul>
+
+  </div><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="install.html" title="previous chapter">Installation of gvm-tools</a></li>
+      <li>Next: <a href="tools.html" title="next chapter">Provided Tools</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018-2020, Greenbone Networks GmbH.
+      
+    </div>
+
+    
+    <a href="https://github.com/greenbone/gvm-tools" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

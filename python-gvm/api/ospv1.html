@@ -1,0 +1,327 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>OSP v1 &#8212; python-gvm 21.11.1.dev1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.gif"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Errors" href="errors.html" />
+    <link rel="prev" title="GMP v21.4" href="gmpv214.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-gvm.protocols.ospv1">
+<span id="osp-v1"></span><span id="ospv1"></span><h1>OSP v1<a class="headerlink" href="#module-gvm.protocols.ospv1" title="Permalink to this headline">¶</a></h1>
+<p>Module for communication to a daemon speaking <a class="reference external" href="https://docs.greenbone.net/API/OSP/osp-20.08.html">Open Scanner Protocol version 1</a></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="gvm.protocols.ospv1.Osp">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gvm.protocols.ospv1.</span></span><span class="sig-name descname"><span class="pre">Osp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connection</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gvm.protocols.ospv1.Osp" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="gvm.protocols.ospv1.Osp.connect">
+<span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gvm.protocols.ospv1.Osp.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initiates a protocol connection</p>
+<p>Normally connect is not called directly. Either it is called
+automatically when sending a protocol command or when using a
+<a class="reference external" href="https://docs.python.org/3/reference/datamodel.html#with-statement-context-managers">with statement</a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gvm.protocols.ospv1.Osp.delete_scan">
+<span class="sig-name descname"><span class="pre">delete_scan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scan_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gvm.protocols.ospv1.Osp.delete_scan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete a finished scan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>scan_id</strong> (<em>str</em>) – UUID identifier for a finished scan.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Response from server.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gvm.protocols.ospv1.Osp.disconnect">
+<span class="sig-name descname"><span class="pre">disconnect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gvm.protocols.ospv1.Osp.disconnect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disconnect the connection</p>
+<p>Ends and closes the connection.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gvm.protocols.ospv1.Osp.get_protocol_version">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_protocol_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gvm.protocols.ospv1.Osp.get_protocol_version" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine the Open Scanner Protocol version.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Implemented version of the Open Scanner Protocol</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gvm.protocols.ospv1.Osp.get_scanner_details">
+<span class="sig-name descname"><span class="pre">get_scanner_details</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gvm.protocols.ospv1.Osp.get_scanner_details" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return scanner description and parameters.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gvm.protocols.ospv1.Osp.get_scans">
+<span class="sig-name descname"><span class="pre">get_scans</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scan_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">details</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pop_results</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gvm.protocols.ospv1.Osp.get_scans" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the stored scans.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scan_id</strong> (<em>str</em><em>, </em><em>optional</em>) – UUID identifier for a scan.</p></li>
+<li><p><strong>details</strong> (<em>boolean</em><em>, </em><em>optional</em>) – Whether to get full scan reports.
+Default: True</p></li>
+<li><p><strong>pop_results</strong> (<em>boolean</em><em>, </em><em>optional</em>) – results. Default: False</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Response from server.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gvm.protocols.ospv1.Osp.get_version">
+<span class="sig-name descname"><span class="pre">get_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gvm.protocols.ospv1.Osp.get_version" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the version of the OSPD server which is connected to.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gvm.protocols.ospv1.Osp.get_vts">
+<span class="sig-name descname"><span class="pre">get_vts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vt_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gvm.protocols.ospv1.Osp.get_vts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return information about vulnerability tests,
+if offered by scanner.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>vt_id</strong> (<em>str</em><em>, </em><em>optional</em>) – UUID identifier for a vulnerability test.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Response from server.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gvm.protocols.ospv1.Osp.help">
+<span class="sig-name descname"><span class="pre">help</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gvm.protocols.ospv1.Osp.help" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the help text.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gvm.protocols.ospv1.Osp.is_connected">
+<span class="sig-name descname"><span class="pre">is_connected</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gvm.protocols.ospv1.Osp.is_connected" title="Permalink to this definition">¶</a></dt>
+<dd><p>Status of the current connection</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if a connection to the remote server has been established.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gvm.protocols.ospv1.Osp.send_command">
+<span class="sig-name descname"><span class="pre">send_command</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gvm.protocols.ospv1.Osp.send_command" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send a command to the remote server</p>
+<p>If the class is not connected to the server yet the connection will be
+established automatically.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cmd</strong> (<em>str</em>) – Command as string to be send over the connection to
+the server.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p>The actual returned type depends on the set transform.</p>
+<p>Per default - if no transform is set explicitly - the response is
+returned as string.</p>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>any</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gvm.protocols.ospv1.Osp.start_scan">
+<span class="sig-name descname"><span class="pre">start_scan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scan_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ports</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scanner_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vt_selection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gvm.protocols.ospv1.Osp.start_scan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start a new scan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scan_id</strong> (<em>str</em><em>, </em><em>optional</em>) – UUID identifier for a running scan.</p></li>
+<li><p><strong>parallel</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of parallel scanned targets.
+Default 1.</p></li>
+<li><p><strong>target</strong> (<em>dict</em><em>, </em><em>optional</em>) – Deprecated. Please use targets instead.</p></li>
+<li><p><strong>targets</strong> (<em>list</em><em>, </em><em>optional</em>) – List of dictionaries. See example.</p></li>
+<li><p><strong>ports</strong> (<em>str</em><em>, </em><em>optional</em>) – Deprecated. Ports to use for target
+parameter.</p></li>
+<li><p><strong>scanner_params</strong> – (dict, optional): Dictionary of scanner parameters.</p></li>
+<li><p><strong>vt_selection</strong> – (dict, optional): Vulnerability tests to select. See
+example.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Response from server.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>Scanner Parameters:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scanner_parameters</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;scan_param1&#39;</span><span class="p">:</span> <span class="s1">&#39;scan_param1_value&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;scan_param2&#39;</span><span class="p">:</span> <span class="s1">&#39;scan_param2_value&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Targets:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">targets</span> <span class="o">=</span> <span class="p">[{</span>
+    <span class="s1">&#39;hosts&#39;</span><span class="p">:</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ports&#39;</span><span class="p">:</span> <span class="s1">&#39;80,43&#39;</span>
+<span class="p">},</span> <span class="p">{</span>
+    <span class="s1">&#39;hosts&#39;</span><span class="p">:</span> <span class="s1">&#39;192.168.0.0/24&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ports&#39;</span><span class="p">:</span> <span class="s1">&#39;22&#39;</span><span class="p">,</span>
+<span class="p">},</span> <span class="p">{</span>
+    <span class="s1">&#39;credentials&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;smb&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;pass&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="s1">&#39;port&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;username&#39;</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}]</span>
+</pre></div>
+</div>
+<p>VT Selection:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vt_selection</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;vt1&#39;</span><span class="p">:</span> <span class="p">{},</span>
+    <span class="s1">&#39;vt2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;value_id&#39;</span><span class="p">:</span> <span class="s1">&#39;value&#39;</span><span class="p">},</span>
+    <span class="s1">&#39;vt_groups&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;family=debian&#39;</span><span class="p">,</span> <span class="s1">&#39;family=general&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gvm.protocols.ospv1.Osp.stop_scan">
+<span class="sig-name descname"><span class="pre">stop_scan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scan_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gvm.protocols.ospv1.Osp.stop_scan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stop a currently running scan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>scan_id</strong> (<em>str</em>) – UUID identifier for a running scan.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Response from server.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><p class="logo">
+  <a href="../index.html">
+    <img
+      class="logo"
+      src="../_static/greenbone.png"
+      alt="Greenbone Logo"
+    />
+    <h1 class="logo logo-name">python-gvm</h1>
+  </a>
+</p>
+<p class="description">
+  Remote Control of Your Greenbone Vulnerability Manager (GVM)
+</p><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="api.html">Developer Interface</a><ul>
+  <li><a href="protocols.html">Protocols</a><ul>
+      <li>Previous: <a href="gmpv214.html" title="previous chapter">GMP v21.4</a></li>
+      <li>Next: <a href="errors.html" title="next chapter">Errors</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018 - 2021, Greenbone Networks GmbH.
+      
+    </div>
+
+    
+    <a href="https://github.com/greenbone/python-gvm" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,277 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Provided Tools &#8212; gvm-tools 21.10.1.dev1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.gif"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Configuration" href="config.html" />
+    <link rel="prev" title="Connection Types" href="connectiontypes.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="provided-tools">
+<span id="tools"></span><h1>Provided Tools<a class="headerlink" href="#provided-tools" title="Permalink to this headline">¶</a></h1>
+<p>Currently, <strong class="program">gvm-tools</strong> comes with three command line interface
+programs:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#gvm-cli"><span class="std std-ref">gvm-cli</span></a></p></li>
+<li><p><a class="reference internal" href="#gvm-script"><span class="std std-ref">gvm-script</span></a></p></li>
+<li><p><a class="reference internal" href="#gvm-pyshell"><span class="std std-ref">gvm-pyshell</span></a></p></li>
+</ul>
+<p>All of these programs are clients communicating either via
+<a class="reference internal" href="glossary.html#term-GMP"><span class="xref std std-term">Greenbone Management Protocol (GMP)</span></a>
+or <a class="reference internal" href="glossary.html#term-OSP"><span class="xref std std-term">Open Scanner Protocol (OSP)</span></a>. The
+<a class="reference internal" href="connectiontypes.html#connection-types"><span class="std std-ref">connection</span></a> is established using a
+<a class="reference internal" href="connectiontypes.html#tls-connection-type"><span class="std std-ref">TLS</span></a>, <a class="reference internal" href="connectiontypes.html#ssh-connection-type"><span class="std std-ref">SSH</span></a> or
+<a class="reference internal" href="connectiontypes.html#socket-connection-type"><span class="std std-ref">Unix Domain Socket</span></a> communication channel.</p>
+<p>All tools take several arguments and parameters. <strong class="program">gvm-tools</strong> allows
+setting defaults for most of these in a configuration file. See <a class="reference internal" href="config.html"><span class="doc">Configuration</span></a>
+for details about the possible settings and capabilities.</p>
+<section id="gvm-cli">
+<span id="id1"></span><h2>gvm-cli<a class="headerlink" href="#gvm-cli" title="Permalink to this headline">¶</a></h2>
+<p><strong class="program">gvm-cli</strong> is a low level tool which offers sending and receiving
+commands and responses for the XML-based <a class="reference internal" href="glossary.html#term-GMP"><span class="xref std std-term">GMP</span></a> and <a class="reference internal" href="glossary.html#term-OSP"><span class="xref std std-term">OSP</span></a>
+directly via the command line. It is intended for <a class="reference internal" href="scripting.html#xml-scripting"><span class="std std-ref">simple scripting</span></a>
+via shell.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>&gt; gvm-cli --help
+usage: gvm-cli <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-c <span class="o">[</span>CONFIG<span class="o">]]</span>
+              <span class="o">[</span>--log <span class="o">[{</span>DEBUG,INFO,WARNING,ERROR,CRITICAL<span class="o">}]]</span>
+              <span class="o">[</span>--timeout TIMEOUT<span class="o">]</span> <span class="o">[</span>--gmp-username GMP_USERNAME<span class="o">]</span>
+              <span class="o">[</span>--gmp-password GMP_PASSWORD<span class="o">]</span> <span class="o">[</span>-V<span class="o">]</span>
+              CONNECTION_TYPE ...
+
+optional arguments:
+  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  -c <span class="o">[</span>CONFIG<span class="o">]</span>, --config <span class="o">[</span>CONFIG<span class="o">]</span>
+                        Configuration file path <span class="o">(</span>default: ~/.config/gvm-
+                        tools.conf<span class="o">)</span>
+  --log <span class="o">[{</span>DEBUG,INFO,WARNING,ERROR,CRITICAL<span class="o">}]</span>
+                        Activate logging <span class="o">(</span>default level: None<span class="o">)</span>
+  --timeout TIMEOUT     Response timeout <span class="k">in</span> seconds, or -1 to <span class="nb">wait</span>
+                        indefinitely <span class="o">(</span>default: <span class="m">60</span><span class="o">)</span>
+  --gmp-username GMP_USERNAME
+                        Username <span class="k">for</span> GMP service <span class="o">(</span>default: <span class="s1">&#39;&#39;</span><span class="o">)</span>
+  --gmp-password GMP_PASSWORD
+                        Password <span class="k">for</span> GMP service <span class="o">(</span>default: <span class="s1">&#39;&#39;</span><span class="o">)</span>
+  -V, --version         Show version information and <span class="nb">exit</span>
+
+connections:
+  valid connection types
+
+  CONNECTION_TYPE       Connection <span class="nb">type</span> to use
+    ssh                 Use SSH to connect to service
+    tls                 Use TLS secured connection to connect to service
+    socket              Use UNIX Domain socket to connect to service
+</pre></div>
+</div>
+<p>Examples:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>&gt; gvm-cli socket --xml <span class="s2">&quot;&lt;get_version/&gt;&quot;</span>
+&lt;get_version_response <span class="nv">status</span><span class="o">=</span><span class="s2">&quot;200&quot;</span> <span class="nv">status_text</span><span class="o">=</span><span class="s2">&quot;OK&quot;</span>&gt;&lt;version&gt;7.0&lt;/version&gt;&lt;/get_version_response&gt;
+
+&gt; gvm-cli socket --xml <span class="s2">&quot;&lt;get_tasks/&gt;&quot;</span>
+&lt;get_tasks_response <span class="nv">status</span><span class="o">=</span><span class="s2">&quot;200&quot;</span> <span class="nv">status_text</span><span class="o">=</span><span class="s2">&quot;OK&quot;</span>&gt;
+...
+&lt;/get_tasks_response&gt;
+
+&gt; gvm-cli socket &lt; commands.xml
+</pre></div>
+</div>
+</section>
+<section id="gvm-script">
+<span id="id2"></span><h2>gvm-script<a class="headerlink" href="#gvm-script" title="Permalink to this headline">¶</a></h2>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 2.0.</span></p>
+</div>
+<p><strong class="program">gvm-script</strong> allows running <a class="reference internal" href="scripting.html#gvm-scripting"><span class="std std-ref">gvm scripts</span></a>
+which are Python based scripts calling the <a class="reference external" href="https://python-gvm.readthedocs.io/en/latest/">Python based GVM API</a>. Depending on the
+<strong class="command">--protocol</strong> argument a global gmp or osp object is passed to the
+script.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong class="program">gvm-script</strong> is only available with <strong class="program">gvm-tools</strong> version 2.0 and beyond.</p>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>usage: gvm-script <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-c <span class="o">[</span>CONFIG<span class="o">]]</span>
+                  <span class="o">[</span>--log <span class="o">[{</span>DEBUG,INFO,WARNING,ERROR,CRITICAL<span class="o">}]]</span>
+                  <span class="o">[</span>--timeout TIMEOUT<span class="o">]</span> <span class="o">[</span>--gmp-username GMP_USERNAME<span class="o">]</span>
+                  <span class="o">[</span>--gmp-password GMP_PASSWORD<span class="o">]</span> <span class="o">[</span>-V<span class="o">]</span> <span class="o">[</span>--protocol <span class="o">{</span>GMP,OSP<span class="o">}]</span>
+                  CONNECTION_TYPE ...
+
+optional arguments:
+  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  -c <span class="o">[</span>CONFIG<span class="o">]</span>, --config <span class="o">[</span>CONFIG<span class="o">]</span>
+                        Configuration file path <span class="o">(</span>default: ~/.config/gvm-
+                        tools.conf<span class="o">)</span>
+  --log <span class="o">[{</span>DEBUG,INFO,WARNING,ERROR,CRITICAL<span class="o">}]</span>
+                        Activate logging <span class="o">(</span>default level: None<span class="o">)</span>
+  --timeout TIMEOUT     Response timeout <span class="k">in</span> seconds, or -1 to <span class="nb">wait</span>
+                        indefinitely <span class="o">(</span>default: <span class="m">60</span><span class="o">)</span>
+  --gmp-username GMP_USERNAME
+                        Username <span class="k">for</span> GMP service <span class="o">(</span>default: <span class="s1">&#39;&#39;</span><span class="o">)</span>
+  --gmp-password GMP_PASSWORD
+                        Password <span class="k">for</span> GMP service <span class="o">(</span>default: <span class="s1">&#39;&#39;</span><span class="o">)</span>
+  -V, --version         Show version information and <span class="nb">exit</span>
+  --protocol <span class="o">{</span>GMP,OSP<span class="o">}</span>  Service protocol to use <span class="o">(</span>default: GMP<span class="o">)</span>
+
+connections:
+  valid connection types
+
+  CONNECTION_TYPE       Connection <span class="nb">type</span> to use
+    ssh                 Use SSH to connect to service
+    tls                 Use TLS secured connection to connect to service
+    socket              Use UNIX Domain socket to connect to service
+</pre></div>
+</div>
+</section>
+<section id="gvm-pyshell">
+<span id="id3"></span><h2>gvm-pyshell<a class="headerlink" href="#gvm-pyshell" title="Permalink to this headline">¶</a></h2>
+<p><strong class="program">gvm-pyshell</strong> is a tool to use the <a class="reference external" href="https://python-gvm.readthedocs.io/en/latest/">Python GVM API</a> interactively. Running the tool
+will open a Python interpreter in the <a class="reference external" href="https://docs.python.org/3/tutorial/interpreter.html#interactive-mode">interactive mode</a>
+providing a global gmp or osp object depending on the <strong class="command">--protocol</strong>
+argument.</p>
+<p>The interactive shell can be exited with:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><kbd class="kbd compound docutils literal notranslate"><kbd class="kbd docutils literal notranslate">Ctrl</kbd> <kbd class="kbd docutils literal notranslate"></kbd>+<kbd class="kbd docutils literal notranslate"></kbd> <kbd class="kbd docutils literal notranslate">D</kbd></kbd> on Linux  or</p></li>
+<li><p><kbd class="kbd compound docutils literal notranslate"><kbd class="kbd docutils literal notranslate">Ctrl</kbd> <kbd class="kbd docutils literal notranslate"></kbd>+<kbd class="kbd docutils literal notranslate"></kbd> <kbd class="kbd docutils literal notranslate">Z</kbd></kbd> on Windows</p></li>
+</ul>
+</div></blockquote>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>&gt; gvm-pyshell --help
+usage: gvm-pyshell <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-c <span class="o">[</span>CONFIG<span class="o">]]</span>
+                  <span class="o">[</span>--log <span class="o">[{</span>DEBUG,INFO,WARNING,ERROR,CRITICAL<span class="o">}]]</span>
+                  <span class="o">[</span>--timeout TIMEOUT<span class="o">]</span> <span class="o">[</span>--gmp-username GMP_USERNAME<span class="o">]</span>
+                  <span class="o">[</span>--gmp-password GMP_PASSWORD<span class="o">]</span> <span class="o">[</span>-V<span class="o">]</span> <span class="o">[</span>--protocol <span class="o">{</span>GMP,OSP<span class="o">}]</span>
+                  CONNECTION_TYPE ...
+
+optional arguments:
+  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  -c <span class="o">[</span>CONFIG<span class="o">]</span>, --config <span class="o">[</span>CONFIG<span class="o">]</span>
+                        Configuration file path <span class="o">(</span>default: ~/.config/gvm-
+                        tools.conf<span class="o">)</span>
+  --log <span class="o">[{</span>DEBUG,INFO,WARNING,ERROR,CRITICAL<span class="o">}]</span>
+                        Activate logging <span class="o">(</span>default level: None<span class="o">)</span>
+  --timeout TIMEOUT     Response timeout <span class="k">in</span> seconds, or -1 to <span class="nb">wait</span>
+                        indefinitely <span class="o">(</span>default: <span class="m">60</span><span class="o">)</span>
+  --gmp-username GMP_USERNAME
+                        Username <span class="k">for</span> GMP service <span class="o">(</span>default: <span class="s1">&#39;&#39;</span><span class="o">)</span>
+  --gmp-password GMP_PASSWORD
+                        Password <span class="k">for</span> GMP service <span class="o">(</span>default: <span class="s1">&#39;&#39;</span><span class="o">)</span>
+  -V, --version         Show version information and <span class="nb">exit</span>
+  --protocol <span class="o">{</span>GMP,OSP<span class="o">}</span>  Service protocol to use <span class="o">(</span>default: GMP<span class="o">)</span>
+
+connections:
+  valid connection types
+
+  CONNECTION_TYPE       Connection <span class="nb">type</span> to use
+    ssh                 Use SSH to connect to service
+    tls                 Use TLS secured connection to connect to service
+    socket              Use UNIX Domain socket to connect to service
+</pre></div>
+</div>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">gvm</span><span class="o">-</span><span class="n">pyshell</span> <span class="n">socket</span>
+<span class="n">GVM</span> <span class="n">Interactive</span> <span class="n">Console</span> <span class="mf">2.0.0</span> <span class="n">API</span> <span class="mf">1.0.0</span><span class="o">.</span> <span class="n">Type</span> <span class="s2">&quot;help&quot;</span> <span class="n">to</span> <span class="n">get</span> <span class="n">information</span> <span class="n">about</span> <span class="n">functionality</span><span class="o">.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">gmp</span><span class="o">.</span><span class="n">get_protocol_version</span><span class="p">()</span>
+<span class="s1">&#39;7&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">gmp</span><span class="o">.</span><span class="n">get_version</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">)</span>
+<span class="s1">&#39;200&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">gmp</span><span class="o">.</span><span class="n">get_version</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span>
+<span class="s1">&#39;7.0&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tasks</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;task&#39;</span><span class="p">)]</span>
+<span class="p">[</span><span class="s1">&#39;Scan Task&#39;</span><span class="p">,</span> <span class="s1">&#39;Simple Scan&#39;</span><span class="p">,</span> <span class="s1">&#39;Host Discovery&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><p class="logo">
+  <a href="index.html">
+    <img
+      class="logo"
+      src="_static/greenbone.png"
+      alt="Greenbone Logo"
+    />
+    <h1 class="logo logo-name">gvm-tools</h1>
+  </a>
+</p>
+<p class="description">
+  Remote Control of Your Greenbone Vulnerability Manager (GVM)
+</p>
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Provided Tools</a><ul>
+<li><a class="reference internal" href="#gvm-cli">gvm-cli</a></li>
+<li><a class="reference internal" href="#gvm-script">gvm-script</a></li>
+<li><a class="reference internal" href="#gvm-pyshell">gvm-pyshell</a></li>
+</ul>
+</li>
+</ul>
+
+  </div><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="connectiontypes.html" title="previous chapter">Connection Types</a></li>
+      <li>Next: <a href="config.html" title="next chapter">Configuration</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018-2020, Greenbone Networks GmbH.
+      
+    </div>
+
+    
+    <a href="https://github.com/greenbone/gvm-tools" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

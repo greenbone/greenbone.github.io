@@ -1,0 +1,166 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Protocols &#8212; python-gvm 21.11.1.dev1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.gif"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="GMP v20.8" href="gmpv208.html" />
+    <link rel="prev" title="Transforms" href="transforms.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="protocols">
+<span id="id1"></span><h1>Protocols<a class="headerlink" href="#protocols" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-gvm.protocols"></span><p>Package for supported Greenbone Protocol versions.</p>
+<p>Currently <a class="reference external" href="https://docs.greenbone.net/API/GMP/gmp-20.08.html">GMP version 20.08</a>, <a class="reference external" href="https://docs.greenbone.net/API/GMP/gmp-21.04.html">GMP version 21.04</a>
+<cite>GMP version 22.04</cite> and <a class="reference external" href="https://docs.greenbone.net/API/OSP/osp-1.2.html">OSP version 1</a> are supported.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gmpv208.html">GMP v20.8</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gmpv208.html#enums">Enums</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gmpv208.html#protocol">Protocol</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gmpv214.html">GMP v21.4</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gmpv214.html#enums">Enums</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gmpv214.html#protocol">Protocol</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ospv1.html">OSP v1</a></li>
+</ul>
+</div>
+<section id="dynamic">
+<h2>Dynamic<a class="headerlink" href="#dynamic" title="Permalink to this headline">¶</a></h2>
+<p>To dynamically use the supported GMP version of the manager daemon see
+<a class="reference internal" href="gmp.html#module-gvm.protocols.gmp" title="gvm.protocols.gmp"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gvm.protocols.gmp</span></code></a> for details.</p>
+</section>
+<section id="module-gvm.protocols.latest">
+<span id="latest-protocols"></span><h2>“latest” protocols<a class="headerlink" href="#module-gvm.protocols.latest" title="Permalink to this headline">¶</a></h2>
+<p>Latest supported protocols, including unstable ones.</p>
+<p>This module exposes the latest supported protocols of GVM including versions
+not yet released as stable.</p>
+<p>The provided Gmp class implements the latest <cite>Greenbone Management Protocol</cite>.
+The provided Osp class implements the latest Open Scanner Protocol.</p>
+<p>For details about the possible supported protocol versions please take a look at
+<a class="reference internal" href="#module-gvm.protocols" title="gvm.protocols"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gvm.protocols</span></code></a>.</p>
+<dl class="simple">
+<dt>Exports:</dt><dd><ul class="simple">
+<li><p><a class="reference internal" href="gmpv214.html#gvm.protocols.gmpv214.Gmp" title="gvm.protocols.gmpv214.Gmp"><code class="xref py py-class docutils literal notranslate"><span class="pre">gvm.protocols.gmpv214.Gmp</span></code></a></p></li>
+<li><p><a class="reference internal" href="ospv1.html#gvm.protocols.ospv1.Osp" title="gvm.protocols.ospv1.Osp"><code class="xref py py-class docutils literal notranslate"><span class="pre">gvm.protocols.ospv1.Osp</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="module-gvm.protocols.next">
+<span id="next-protocols"></span><h2>“next” protocols<a class="headerlink" href="#module-gvm.protocols.next" title="Permalink to this headline">¶</a></h2>
+<p>Latest supported protocols, including unstable ones.</p>
+<p>This module exposes the latest supported protocols of GVM including versions
+not yet released as stable.</p>
+<p>The provided Gmp class implements the latest <cite>Greenbone Management Protocol</cite>.
+The provided Osp class implements the latest Open Scanner Protocol.</p>
+<p>For details about the possible supported protocol versions please take a look at
+<a class="reference internal" href="#module-gvm.protocols" title="gvm.protocols"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gvm.protocols</span></code></a>.</p>
+<dl class="simple">
+<dt>Exports:</dt><dd><ul class="simple">
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">gvm.protocols.gmpv224.Gmp</span></code></p></li>
+<li><p><a class="reference internal" href="ospv1.html#gvm.protocols.ospv1.Osp" title="gvm.protocols.ospv1.Osp"><code class="xref py py-class docutils literal notranslate"><span class="pre">gvm.protocols.ospv1.Osp</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><p class="logo">
+  <a href="../index.html">
+    <img
+      class="logo"
+      src="../_static/greenbone.png"
+      alt="Greenbone Logo"
+    />
+    <h1 class="logo logo-name">python-gvm</h1>
+  </a>
+</p>
+<p class="description">
+  Remote Control of Your Greenbone Vulnerability Manager (GVM)
+</p>
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Protocols</a><ul>
+<li><a class="reference internal" href="#dynamic">Dynamic</a></li>
+<li><a class="reference internal" href="#module-gvm.protocols.latest">“latest” protocols</a></li>
+<li><a class="reference internal" href="#module-gvm.protocols.next">“next” protocols</a></li>
+</ul>
+</li>
+</ul>
+
+  </div><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="api.html">Developer Interface</a><ul>
+      <li>Previous: <a href="transforms.html" title="previous chapter">Transforms</a></li>
+      <li>Next: <a href="gmpv208.html" title="next chapter">GMP v20.8</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018 - 2021, Greenbone Networks GmbH.
+      
+    </div>
+
+    
+    <a href="https://github.com/greenbone/python-gvm" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

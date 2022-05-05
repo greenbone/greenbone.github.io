@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>GMP &#8212; python-gvm 21.11.1.dev1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.gif"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <span class="target" id="gmp"></span><section id="id1">
+<h1>GMP<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-gvm.protocols.gmp"></span><p>Module for communication with gvmd</p>
+<section id="protocol">
+<h2>Protocol<a class="headerlink" href="#protocol" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="gvm.protocols.gmp.Gmp">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gvm.protocols.gmp.</span></span><span class="sig-name descname"><span class="pre">Gmp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connection</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gvm.protocols.gmp.Gmp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dynamically select supported GMP protocol of the remote manager daemon.</p>
+<p>Must be used as a <a class="reference external" href="https://docs.python.org/3/reference/datamodel.html#context-managers">Context Manager</a></p>
+<p class="rubric">Example</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gvm.protocols.gmp</span> <span class="kn">import</span> <span class="n">Gmp</span>
+
+<span class="k">with</span> <span class="n">Gmp</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span> <span class="k">as</span> <span class="n">gmp</span><span class="p">:</span>
+    <span class="c1"># gmp can be an instance of gvm.protocols.gmpv208.Gmp,</span>
+    <span class="c1"># gvm.protocols.gmpv214.Gmp depending</span>
+    <span class="c1"># on the supported GMP version of the remote manager daemon</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">gmp</span><span class="o">.</span><span class="n">get_tasks</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gvm.protocols.gmp.Gmp.connection">
+<span class="sig-name descname"><span class="pre">connection</span></span><a class="headerlink" href="#gvm.protocols.gmp.Gmp.connection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connection to use to talk with the remote daemon. See
+<a class="reference internal" href="connections.html#module-gvm.connections" title="gvm.connections"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gvm.connections</span></code></a> for possible connection types.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gvm.protocols.gmp.Gmp.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><a class="headerlink" href="#gvm.protocols.gmp.Gmp.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optional transform <a class="reference external" href="https://docs.python.org/3/library/functions.html#callable">callable</a> to convert response data.
+After each request the callable gets passed the plain response data
+which can be used to check the data and/or conversion into different
+representations like a xml dom.</p>
+<p>See <a class="reference internal" href="transforms.html#module-gvm.transforms" title="gvm.transforms"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gvm.transforms</span></code></a> for existing transforms.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gvm.protocols.gmp.Gmp.determine_remote_gmp_version">
+<span class="sig-name descname"><span class="pre">determine_remote_gmp_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gvm.protocols.gmp.Gmp.determine_remote_gmp_version" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine the supported GMP version of the remote daemon</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gvm.protocols.gmp.Gmp.determine_supported_gmp">
+<span class="sig-name descname"><span class="pre">determine_supported_gmp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gvm.protocols.gmp.Gmp.determine_supported_gmp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine supported GMP version of the remote daemon and return a
+corresponding Gmp class instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="gmpv208.html#gvm.protocols.gmpv208.Gmp" title="gvm.protocols.gmpv208.Gmp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Gmp</span></code></a>, <a class="reference internal" href="gmpv214.html#gvm.protocols.gmpv214.Gmp" title="gvm.protocols.gmpv214.Gmp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Gmp</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Gmp</span></code>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><p class="logo">
+  <a href="../index.html">
+    <img
+      class="logo"
+      src="../_static/greenbone.png"
+      alt="Greenbone Logo"
+    />
+    <h1 class="logo logo-name">python-gvm</h1>
+  </a>
+</p>
+<p class="description">
+  Remote Control of Your Greenbone Vulnerability Manager (GVM)
+</p>
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">GMP</a><ul>
+<li><a class="reference internal" href="#protocol">Protocol</a></li>
+</ul>
+</li>
+</ul>
+
+  </div><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018 - 2021, Greenbone Networks GmbH.
+      
+    </div>
+
+    
+    <a href="https://github.com/greenbone/python-gvm" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

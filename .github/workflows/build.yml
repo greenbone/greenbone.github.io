@@ -1,0 +1,13 @@
+name: Documentation
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Documentation Website
+    runs-on:
+      - self-hosted
+      - self-hosted-generic
+    steps:
+      - name: Build Docs
+        run: build.sh

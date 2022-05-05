@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 set -Eeuxo pipefail
-
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 WORK_DIR=$(pwd)
+
+command -v xsltproc || (echo "Please install 'xsltproc': sudo apt-get install xsltproc" && exit 1)
+command -v gh || (echo "Please install 'gh': see https://cli.github.com/manual/installation" && exit 1)
 
 git pull --recurse-submodules
 
@@ -33,6 +35,34 @@ for dPath in $(find . -maxdepth 2 -name 'docs' -not -path "./_gen/*" -print); do
     cp -ar build/html/. "${GEN_DIR}/${dPath}/.." || cp -ar _build/html/. "${GEN_DIR}/${dPath}/.." || (echo "no build/html folder" && exit 1)
 done
 
+cd "${WORK_DIR}"
+
+dl_gmp_doc() {
+    runID=$(gh run list -R greenbone/gvmd -L 10 -w build-docs.yml --json 'databaseId' -b $1 -q 'first(.[]).databaseId')
+    gh run download $runID -D "${GEN_DIR}/gmp_doc/tmp/$1" -R greenbone/gvmd
+    mkdir -p "${GEN_DIR}/protocol/$1/"
+    mv "${GEN_DIR}/gmp_doc/tmp/$1/gmp.html/gmp.html" "${GEN_DIR}/protocol/$1/"
+    rm -rf "${GEN_DIR}/gmp_doc/tmp/$1/gmp.html"
+}
+dl_gmp_doc "oldstable"
+dl_gmp_doc "stable"
+dl_gmp_doc "main"
+
+
+gh repo clone greenbone/ospd-openvas
+cd ospd-openvas
+dl_osp_doc() {
+    git switch $1
+    docs/generate
+    mkdir -p "${GEN_DIR}/protocol/$1"
+    mv docs/osp.html "${GEN_DIR}/protocol/$1/"
+}
+dl_osp_doc main
+dl_osp_doc stable
+dl_osp_doc oldstable
+cd "${WORK_DIR}"
+rm -rf ospd-openvas
+
 (
     cd "${WORK_DIR}/_index"
     poetry install
@@ -42,7 +72,6 @@ poetry run make html
 cp -ar build/html/. "${GEN_DIR}/" || cp -ar _build/html/. "${GEN_DIR}/" || (echo "no build/html folder" && exit 1)
 
 cd "${GEN_DIR}" || (echo "no ${GEN_DIR} found" && exit 1)
-
 git add .
 git commit -m "Update docs - Build $(date '+%Y%m%d%H%M%S')"
 git branch --set-upstream-to=origin/gh-pages gh-pages

@@ -1,0 +1,1881 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>OSP</title>
+</head>
+<body style="background-color: #FFFFFF; margin: 0px; font: small Verdana, sans-serif; font-size: 12px; color: #1A1A1A;"><div style="width: 98%; width:700px; align: center; margin-left: auto; margin-right: auto;"><table style="width: 100%;" cellpadding="3" cellspacing="0"><tr><td valign="top">
+<h1>OSP:
+                  Open Scanner Protocol</h1>
+<p>Version: 20.08</p>
+<p>The Open Scanner Protocol.</p>
+<h2 id="contents">Contents</h2>
+<ol>
+<li><a href="#type_summary">Summary of Data Types</a></li>
+<li><a href="#element_summary">Summary of Elements</a></li>
+<li><a href="#command_summary">Summary of Commands</a></li>
+<li><a href="#type_details">Data Type Details</a></li>
+<li><a href="#element_details">Element Details</a></li>
+<li><a href="#command_details">Command Details</a></li>
+<li><a href="#parameter_summary">Summary of Scanner Parameters Types</a></li>
+<li><a href="#changes">
+                      Compatibility Changes in Version 20.08</a></li>
+</ol>
+<h2 id="type_summary">1 Summary of Data Types</h2>
+<table>
+<tr>
+<td><a href="#type_boolean">boolean</a></td>
+<td><div style="margin-left: 15px;">0 or 1.</div></td>
+</tr>
+<tr>
+<td><a href="#type_epoch_time">epoch_time</a></td>
+<td><div style="margin-left: 15px;">A date, in Unix format.</div></td>
+</tr>
+<tr>
+<td><a href="#type_integer">integer</a></td>
+<td><div style="margin-left: 15px;">An integer.</div></td>
+</tr>
+<tr>
+<td><a href="#type_status">status</a></td>
+<td><div style="margin-left: 15px;">Status code describing the result of a command.</div></td>
+</tr>
+<tr>
+<td><a href="#type_string">string</a></td>
+<td><div style="margin-left: 15px;">A string.</div></td>
+</tr>
+<tr>
+<td><a href="#type_uuid">uuid</a></td>
+<td><div style="margin-left: 15px;">A Universally Unique Identifier (UUID).</div></td>
+</tr>
+<tr>
+<td><a href="#type_vt_id">vt_id</a></td>
+<td><div style="margin-left: 15px;">Identifier for a vulnerability test.</div></td>
+</tr>
+</table>
+<h2 id="element_summary">2 Summary of Elements</h2>
+<table id="index">
+<tr id="index">
+<td id="index"><a href="#element_credential">credential</a></td>
+<td id="index"><div style="margin-left: 15px;">A credential consisting of type, service, port, username and password..</div></td>
+</tr>
+<tr id="index">
+<td id="index"><a href="#element_scanner_params">scanner_params</a></td>
+<td id="index"><div style="margin-left: 15px;">Contains elements that represent scanner specific parameters.</div></td>
+</tr>
+<tr id="index">
+<td id="index"><a href="#element_targets">targets</a></td>
+<td id="index"><div style="margin-left: 15px;">List of targets.</div></td>
+</tr>
+<tr id="index">
+<td id="index"><a href="#element_target">target</a></td>
+<td id="index"><div style="margin-left: 15px;">A scan target consisting of hosts, a port selection and credentials.</div></td>
+</tr>
+<tr id="index">
+<td id="index"><a href="#element_vt_group">vt_group</a></td>
+<td id="index"><div style="margin-left: 15px;">Collection of Vulnerability Test.</div></td>
+</tr>
+<tr id="index">
+<td id="index"><a href="#element_vt_selection">vt_selection</a></td>
+<td id="index"><div style="margin-left: 15px;">Contains elements that represent a Vulnerability Test or a collection of Vulnerability Tests to be executed and their parameters.</div></td>
+</tr>
+<tr id="index">
+<td id="index"><a href="#element_vt_single">vt_single</a></td>
+<td id="index"><div style="margin-left: 15px;">Elements that represent Vulnerability Tests.</div></td>
+</tr>
+<tr id="index">
+<td id="index"><a href="#element_vt_value">vt_value</a></td>
+<td id="index"><div style="margin-left: 15px;">Vulnerability Test parameter.</div></td>
+</tr>
+</table>
+<h2 id="command_summary">3 Summary of Commands</h2>
+<table>
+<tr>
+<td><a href="#command_help">help</a></td>
+<td><div style="margin-left: 15px;">Get the help text.</div></td>
+</tr>
+<tr>
+<td><a href="#command_get_performance">get_performance</a></td>
+<td><div style="margin-left: 15px;">Return performance information from an external program.</div></td>
+</tr>
+<tr>
+<td><a href="#command_get_scans">get_scans</a></td>
+<td><div style="margin-left: 15px;">Get a stored scan in buffer.</div></td>
+</tr>
+<tr>
+<td><a href="#command_delete_scan">delete_scan</a></td>
+<td><div style="margin-left: 15px;">Delete a finished scan.</div></td>
+</tr>
+<tr>
+<td><a href="#command_get_version">get_version</a></td>
+<td><div style="margin-left: 15px;">Return various versions.</div></td>
+</tr>
+<tr>
+<td><a href="#command_get_scanner_details">get_scanner_details</a></td>
+<td><div style="margin-left: 15px;">Return scanner description and parameters.</div></td>
+</tr>
+<tr>
+<td><a href="#command_get_vts">get_vts</a></td>
+<td><div style="margin-left: 15px;">Return information about vulnerability tests, if offered by scanner.</div></td>
+</tr>
+<tr>
+<td><a href="#command_start_scan">start_scan</a></td>
+<td><div style="margin-left: 15px;">Start a new scan.</div></td>
+</tr>
+<tr>
+<td><a href="#command_stop_scan">stop_scan</a></td>
+<td><div style="margin-left: 15px;">Stop a currently running scan.</div></td>
+</tr>
+<tr>
+<td><a href="#command_get_memory_usage">get_memory_usage</a></td>
+<td><div style="margin-left: 15px;">Return memory usage information of the osp daemon.</div></td>
+</tr>
+</table>
+<h2 id="type_details">4 Data Types Details</h2>
+<div>
+<div><h3 id="type_boolean">4.1
+        Data Type <tt>boolean</tt>
+</h3></div>
+<p>In short: 0 or 1.</p>
+<h4>4.1.1 RNC</h4>
+<div style="border: 1px solid; padding:10px; width: 85%; align: center; margin-left: auto; margin-right: auto; background: #d5d5d5;"><pre>boolean = xsd:token { pattern = "[01]" }
+    </pre></div>
+</div>
+<div>
+<div><h3 id="type_epoch_time">4.2
+        Data Type <tt>epoch_time</tt>
+</h3></div>
+<p>In short: A date, in Unix format.</p>
+<h4>4.2.1 RNC</h4>
+<div style="border: 1px solid; padding:10px; width: 85%; align: center; margin-left: auto; margin-right: auto; background: #d5d5d5;"><pre>epoch_time = integer
+    </pre></div>
+</div>
+<div>
+<div><h3 id="type_integer">4.3
+        Data Type <tt>integer</tt>
+</h3></div>
+<p>In short: An integer.</p>
+<h4>4.3.1 RNC</h4>
+<div style="border: 1px solid; padding:10px; width: 85%; align: center; margin-left: auto; margin-right: auto; background: #d5d5d5;"><pre>integer = integer
+    </pre></div>
+</div>
+<div>
+<div><h3 id="type_status">4.4
+        Data Type <tt>status</tt>
+</h3></div>
+<p>In short: Status code describing the result of a command.</p>
+<h4>4.4.1 RNC</h4>
+<div style="border: 1px solid; padding:10px; width: 85%; align: center; margin-left: auto; margin-right: auto; background: #d5d5d5;"><pre>status = xsd:token { pattern = "[1-5][0-9][0-9]" }
+    </pre></div>
+</div>
+<div>
+<div><h3 id="type_string">4.5
+        Data Type <tt>string</tt>
+</h3></div>
+<p>In short: A string.</p>
+<h4>4.5.1 RNC</h4>
+<div style="border: 1px solid; padding:10px; width: 85%; align: center; margin-left: auto; margin-right: auto; background: #d5d5d5;"><pre>string = text
+    </pre></div>
+</div>
+<div>
+<div><h3 id="type_uuid">4.6
+        Data Type <tt>uuid</tt>
+</h3></div>
+<p>In short: A Universally Unique Identifier (UUID).</p>
+<h4>4.6.1 RNC</h4>
+<div style="border: 1px solid; padding:10px; width: 85%; align: center; margin-left: auto; margin-right: auto; background: #d5d5d5;"><pre>uuid = xsd:token { pattern = "[0-9abcdefABCDEF\-]{1,40}" }
+    </pre></div>
+</div>
+<div>
+<div><h3 id="type_vt_id">4.7
+        Data Type <tt>vt_id</tt>
+</h3></div>
+<p>In short: Identifier for a vulnerability test.</p>
+<h4>4.7.1 RNC</h4>
+<div style="border: 1px solid; padding:10px; width: 85%; align: center; margin-left: auto; margin-right: auto; background: #d5d5d5;"><pre>vt_id = xsd:token { pattern = "[0-9a-zA-Z_\-.:]{1,80}" }
+    </pre></div>
+</div>
+<h2 id="element_details">5 Element Details</h2>
+<div>
+<div><h3 id="element_credential">5.1
+        Element <tt>credential</tt>
+</h3></div>
+<p>In short: A credential consisting of type, service, port, username and password..</p>
+<h4>5.1.1 Structure</h4>
+<ul style="list-style: none"><li><ul style="list-style: none">
+<li>
+          @<b>type</b>
+          (<a href="#type_string">string</a>)
+          </li>
+<li>
+          @<b>service</b>
+          (<a href="#type_string">string</a>)
+          </li>
+<li>
+          @<b>port</b>
+          (<a href="#type_string">string</a>)
+          </li>
+<li>
+              &lt;<b>username</b>&gt;
+              <ul style="list-style: none"></ul>
+</li>
+<li>
+              &lt;<b>password</b>&gt;
+              <ul style="list-style: none"></ul>
+</li>
+</ul></li></ul>
+<h4>5.1.2 RNC</h4>
+<div style="border: 1px solid; padding:10px; width: 85%; align: center; margin-left: auto; margin-right: auto; background: #d5d5d5;"><div style="margin-left: 5%"><pre>credential
+     = element credential
+         {
+           attribute type { string }
+           &amp; attribute service { string }
+           &amp; attribute port { string }?
+           &amp; credential_username
+           &amp; credential_password
+         }
+    
+    credential_username
+     = element username
+         {
+           text
+         }
+    
+    credential_password
+     = element password
+         {
+           text
+         }
+    </pre></div></div>
+<h4>5.1.3 Example: Credential with port</h4>
+<div style="margin-left: 5%; margin-right: 5%;">
+<i></i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;credential type="up"
+                 service="ssh"
+                 port="22"&gt;
+       &lt;username&gt;scanuser&lt;/username&gt;
+       &lt;password&gt;mypass&lt;/password&gt;
+     &lt;/credential&gt;
+    </pre></div>
+</div>
+<h4>5.1.3 Example: Credential without port</h4>
+<div style="margin-left: 5%; margin-right: 5%;">
+<i></i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;credential type="up"
+                 service="smb"&gt;
+       &lt;username&gt;smbuser&lt;/username&gt;
+       &lt;password&gt;mypass&lt;/password&gt;
+     &lt;/credential&gt;
+    </pre></div>
+</div>
+</div>
+<div>
+<div><h3 id="element_scanner_params">5.2
+        Element <tt>scanner_params</tt>
+</h3></div>
+<p>In short: Contains elements that represent scanner specific parameters.</p>
+<h4>5.2.1 Structure</h4>
+<ul style="list-style: none"><li><ul style="list-style: none"><li>
+              &lt;<b>e</b>&gt;
+              <div style="margin-left: 15px; display: inline;">(string)</div>
+<div style="margin-left: 15px; display: inline;">Element that represents a scanner specific parameters.</div>
+<ul style="list-style: none"></ul>
+</li></ul></li></ul>
+<h4>5.2.2 RNC</h4>
+<div style="border: 1px solid; padding:10px; width: 85%; align: center; margin-left: auto; margin-right: auto; background: #d5d5d5;"><div style="margin-left: 5%"><pre>scanner_params
+     = element scanner_params
+         {
+           scanner_params_e
+         }
+    
+    scanner_params_e
+     = element e    # type string
+         {
+         }
+    </pre></div></div>
+<h4>5.2.3 Example: scanner_params</h4>
+<div style="margin-left: 5%; margin-right: 5%;">
+<i></i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;scanner_params&gt;
+       &lt;target_port&gt;443&lt;/target_port&gt;
+       &lt;use_https&gt;1&lt;/use_https&gt;
+       &lt;profile&gt;fast_scan&lt;/profile&gt;
+     &lt;/scanner_params&gt;
+    </pre></div>
+</div>
+</div>
+<div>
+<div><h3 id="element_targets">5.3
+        Element <tt>targets</tt>
+</h3></div>
+<p>In short: List of targets.</p>
+<h4>5.3.1 Structure</h4>
+<ul style="list-style: none"><li><ul style="list-style: none"><li>
+              &lt;<a href="#element_target"><b>target</b></a>&gt;
+              <div style="margin-left: 15px; display: inline;">A scan target consisting of hosts, a port selection and credentials.</div>
+</li></ul></li></ul>
+<h4>5.3.2 RNC</h4>
+<div style="border: 1px solid; padding:10px; width: 85%; align: center; margin-left: auto; margin-right: auto; background: #d5d5d5;"><div style="margin-left: 5%"><pre>targets
+     = element targets
+         {
+           target
+         }
+    </pre></div></div>
+<h4>5.3.3 Example: Two targets</h4>
+<div style="margin-left: 5%; margin-right: 5%;">
+<i></i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;targets&gt;
+       &lt;target&gt;...&lt;/target&gt;
+       &lt;target&gt;...&lt;/target&gt;
+     &lt;/targets&gt;
+    </pre></div>
+</div>
+</div>
+<div>
+<div><h3 id="element_target">5.4
+        Element <tt>target</tt>
+</h3></div>
+<p>In short: A scan target consisting of hosts, a port selection and credentials.</p>
+<h4>5.4.1 Structure</h4>
+<ul style="list-style: none"><li><ul style="list-style: none">
+<li>
+              &lt;<b>hosts</b>&gt;
+              <div style="margin-left: 15px; display: inline;">(string)</div>
+<div style="margin-left: 15px; display: inline;">One or many hosts. The list is comma-separated. Each entry can be a IP address, a CIDR notation, a hostname, a IP range. IPs can be v4 or v6.</div>
+<ul style="list-style: none"></ul>
+</li>
+<li>
+              &lt;<b>ports</b>&gt;
+              <div style="margin-left: 15px; display: inline;">(string)</div>
+<div style="margin-left: 15px; display: inline;">A list of ports that is the same for the given hosts.</div>
+<ul style="list-style: none"></ul>
+</li>
+<li>
+              &lt;<b>credentials</b>&gt;
+              <div style="margin-left: 15px; display: inline;">One or many credentials containing the credential for the given hosts..</div>
+<ul style="list-style: none"><li>
+              &lt;<a href="#element_credential"><b>credential</b></a>&gt;
+              <div style="margin-left: 15px; display: inline;">A credential consisting of type, service, port, username and password..</div>
+</li></ul>
+</li>
+<li>
+              &lt;<b>exclude_hosts</b>&gt;
+              <div style="margin-left: 15px; display: inline;">(string)</div>
+<div style="margin-left: 15px; display: inline;">One or many hosts to exclude. The list is comma-separated. Each entry can be a IP address, a CIDR notation, a hostname, a IP range. IPs can be v4 or v6. Each wrapper must handle the exclude hosts..</div>
+<ul style="list-style: none"></ul>
+</li>
+<li>
+              &lt;<b>finished_hosts</b>&gt;
+              <div style="margin-left: 15px; display: inline;">(string)</div>
+<div style="margin-left: 15px; display: inline;">One or many finished hosts to exclude when the client resumes a task. The list is comma-separated. Each entry can be an IP address, a CIDR notation, a hostname, a IP range. IPs can be v4 or v6. The listed hosts will be set as finished before starting the scan. Each wrapper must handle the finished hosts..</div>
+<ul style="list-style: none"></ul>
+</li>
+<li>
+              &lt;<b>alive_test</b>&gt;
+              <div style="margin-left: 15px; display: inline;">(string)</div>
+<div style="margin-left: 15px; display: inline;">Alive test type to be performed against the target..</div>
+<ul style="list-style: none"></ul>
+</li>
+<li>
+              &lt;<b>reverse_lookup_unify</b>&gt;
+              <div style="margin-left: 15px; display: inline;">(string)</div>
+<div style="margin-left: 15px; display: inline;">If multiple IP addresses resolve to the same DNS name the DNS name will only get scanned once..</div>
+<ul style="list-style: none"></ul>
+</li>
+<li>
+              &lt;<b>reverse_lookup_only</b>&gt;
+              <div style="margin-left: 15px; display: inline;">(string)</div>
+<div style="margin-left: 15px; display: inline;">Only scan IP addresses that can be resolved into a DNS name..</div>
+<ul style="list-style: none"></ul>
+</li>
+</ul></li></ul>
+<h4>5.4.2 RNC</h4>
+<div style="border: 1px solid; padding:10px; width: 85%; align: center; margin-left: auto; margin-right: auto; background: #d5d5d5;"><div style="margin-left: 5%"><pre>target
+     = element target
+         {
+           target_hosts
+           &amp; target_ports
+           &amp; target_credentials
+           &amp; target_exclude_hosts
+           &amp; target_finished_hosts
+           &amp; target_alive_test
+           &amp; target_reverse_lookup_unify
+           &amp; target_reverse_lookup_only
+         }
+    
+    target_hosts
+     = element hosts    # type string
+         {
+         }
+    
+    target_ports
+     = element ports    # type string
+         {
+         }
+    
+    target_credentials
+     = element credentials
+         {
+           credential
+         }
+    
+    target_exclude_hosts
+     = element exclude_hosts    # type string
+         {
+         }
+    
+    target_finished_hosts
+     = element finished_hosts    # type string
+         {
+         }
+    
+    target_alive_test
+     = element alive_test    # type string
+         {
+         }
+    
+    target_reverse_lookup_only
+     = element reverse_lookup_only    # type string
+         {
+         }
+    
+    target_reverse_lookup_unify
+     = element reverse_lookup_unify    # type string
+         {
+         }
+    </pre></div></div>
+<h4>5.4.3 Example: Target without credentials.</h4>
+<div style="margin-left: 5%; margin-right: 5%;">
+<i></i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;target&gt;
+       &lt;hosts&gt;example.org&lt;/hosts&gt;
+       &lt;ports&gt;T:22,U:5060&lt;/ports&gt;
+       &lt;alive_test&gt;0&lt;/alive_test&gt;
+       &lt;reverse_lookup_only&gt;0&lt;/reverse_lookup_only&gt;
+       &lt;reverse_lookup_unify&gt;0&lt;/reverse_lookup_unify&gt;
+     &lt;/target&gt;
+    </pre></div>
+</div>
+<h4>5.4.3 Example: Target with two credentials.</h4>
+<div style="margin-left: 5%; margin-right: 5%;">
+<i></i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;target&gt;
+       &lt;hosts&gt;192.168.1.0/24&lt;/hosts&gt;
+       &lt;ports&gt;1,2,3,80,443&lt;/ports&gt;
+       &lt;credentials&gt;
+         &lt;credential&gt;...&lt;/credential&gt;
+         &lt;credential&gt;...&lt;/credential&gt;
+       &lt;/credentials&gt;
+       &lt;exclude_hosts&gt;192.168.1.10-15&lt;/exclude_hosts&gt;
+       &lt;finished_hosts&gt;192.168.1.1-3&lt;/finished_hosts&gt;
+     &lt;/target&gt;
+    </pre></div>
+</div>
+</div>
+<div>
+<div><h3 id="element_vt_group">5.5
+        Element <tt>vt_group</tt>
+</h3></div>
+<p>In short: Collection of Vulnerability Test.</p>
+<h4>5.5.1 Structure</h4>
+<ul style="list-style: none"><li><ul style="list-style: none"><li>
+          @<b>filter</b>
+          (<a href="#type_string">string</a>)
+          </li></ul></li></ul>
+<h4>5.5.2 RNC</h4>
+<div style="border: 1px solid; padding:10px; width: 85%; align: center; margin-left: auto; margin-right: auto; background: #d5d5d5;"><div style="margin-left: 5%"><pre>vt_group
+     = element vt_group
+         {
+           attribute filter { string }
+         }
+    </pre></div></div>
+<h4>5.5.3 Example: VT group filtered by family name </h4>
+<div style="margin-left: 5%; margin-right: 5%;">
+<i></i><div style="margin-left: 2%; margin-right: 2%;">
+<pre> &lt;vt_group filter="family=general"/&gt;
+    </pre>
+<pre> &lt;vt_group filter="family=debian"/&gt;
+    </pre>
+</div>
+</div>
+</div>
+<div>
+<div><h3 id="element_vt_selection">5.6
+        Element <tt>vt_selection</tt>
+</h3></div>
+<p>In short: Contains elements that represent a Vulnerability Test or a collection of Vulnerability Tests to be executed and their parameters.</p>
+<h4>5.6.1 Structure</h4>
+<ul style="list-style: none"><li><ul style="list-style: none">
+<li>
+              &lt;<a href="#element_vt_single"><b>vt_single</b></a>&gt;
+              <div style="margin-left: 15px; display: inline;">Elements that represent Vulnerability Tests.</div>
+</li>
+<li>
+              &lt;<a href="#element_vt_group"><b>vt_group</b></a>&gt;
+              <div style="margin-left: 15px; display: inline;">Collection of Vulnerability Test.</div>
+</li>
+</ul></li></ul>
+<h4>5.6.2 RNC</h4>
+<div style="border: 1px solid; padding:10px; width: 85%; align: center; margin-left: auto; margin-right: auto; background: #d5d5d5;"><div style="margin-left: 5%"><pre>vt_selection
+     = element vt_selection
+         {
+           vt_single
+           &amp; vt_group
+         }
+    </pre></div></div>
+<h4>5.6.3 Example: VT with parameters and VT group </h4>
+<div style="margin-left: 5%; margin-right: 5%;">
+<i></i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;vt_selection&gt;
+       &lt;vt_single id="1.3.6.1.4.1.25623.1.0.10662"&gt;
+         &lt;vt_value id="XYZ JKL"&gt;200&lt;/vt_value&gt;
+         &lt;vt_value id="ABC"&gt;yes&lt;/vt_value&gt;
+       &lt;/vt_single&gt;
+       &lt;vt_single id="1.3.6.1.4.1.25623.1.0.10330"/&gt;
+       &lt;vt_single id="1.3.6.1.4.1.25623.1.0.100034"/&gt;
+       &lt;vt_group filter="family=general"/&gt;
+       &lt;vt_group filter="family=debian"/&gt;
+     &lt;/vt_selection&gt;
+    </pre></div>
+</div>
+</div>
+<div>
+<div><h3 id="element_vt_single">5.7
+        Element <tt>vt_single</tt>
+</h3></div>
+<p>In short: Elements that represent Vulnerability Tests.</p>
+<h4>5.7.1 Structure</h4>
+<ul style="list-style: none"><li><ul style="list-style: none">
+<li>
+          @<b>vt_id</b>
+          (<a href="#type_vt_id">vt_id</a>)
+          Identifier for a vulnerability test.
+          </li>
+<li>
+              &lt;<a href="#element_vt_value"><b>vt_value</b></a>&gt;
+              <div style="margin-left: 15px; display: inline;">Vulnerability Test parameter.</div>
+</li>
+</ul></li></ul>
+<h4>5.7.2 RNC</h4>
+<div style="border: 1px solid; padding:10px; width: 85%; align: center; margin-left: auto; margin-right: auto; background: #d5d5d5;"><div style="margin-left: 5%"><pre>vt_single
+     = element vt_single
+         {
+           attribute vt_id { vt_id }
+           &amp; vt_value
+         }
+    </pre></div></div>
+<h4>5.7.3 Example: VT with parameters</h4>
+<div style="margin-left: 5%; margin-right: 5%;">
+<i></i><div style="margin-left: 2%; margin-right: 2%;">
+<pre> &lt;vt_single id="1.3.6.1.4.1.25623.1.0.10662"&gt;
+       &lt;vt_value id="XYZ JKL"&gt;200&lt;/vt_value&gt;
+       &lt;vt_value id="ABC"&gt;yes&lt;/vt_value&gt;
+     &lt;/vt_single&gt;
+    </pre>
+<pre> &lt;vt_single id="1.3.6.1.4.1.25623.1.0.10330"/&gt;
+    </pre>
+</div>
+</div>
+</div>
+<div>
+<div><h3 id="element_vt_value">5.8
+        Element <tt>vt_value</tt>
+</h3></div>
+<p>In short: Vulnerability Test parameter.</p>
+<h4>5.8.1 Structure</h4>
+<ul style="list-style: none"><li><ul style="list-style: none"><li>
+          @<b>id</b>
+          (<a href="#type_string">string</a>)
+          </li></ul></li></ul>
+<h4>5.8.2 RNC</h4>
+<div style="border: 1px solid; padding:10px; width: 85%; align: center; margin-left: auto; margin-right: auto; background: #d5d5d5;"><div style="margin-left: 5%"><pre>vt_value
+     = element vt_value
+         {
+           string
+           &amp; attribute id { string }
+         }
+    </pre></div></div>
+<h4>5.8.3 Example: Parameters for a single VT</h4>
+<div style="margin-left: 5%; margin-right: 5%;">
+<i></i><div style="margin-left: 2%; margin-right: 2%;">
+<pre> &lt;vt_value id="XYZ JKL"&gt;200&lt;/vt_value&gt;
+    </pre>
+<pre> &lt;vt_value id="ABC"&gt;yes&lt;/vt_value&gt;
+    </pre>
+</div>
+</div>
+</div>
+<h2 id="command_details">6 Command Details</h2>
+<div>
+<div><h3 id="command_help">6.1
+        Command <tt>help</tt>
+</h3></div>
+<p>In short: Get the help text.</p>
+<h4>6.1.1 Structure</h4>
+<ul style="list-style: none">
+<li>
+<i>Command</i><ul style="list-style: none"><li>
+          @<b>format</b>
+          ("xml" or "text")
+          Help format.
+          </li></ul>
+</li>
+<li style="margin-top: 15px;">
+<i>Response</i><ul style="list-style: none">
+<li>
+          @<b>status</b>
+          (<a href="#type_status">status</a>)
+          </li>
+<li>
+          @<b>status_text</b>
+          (text)
+          </li>
+</ul>
+</li>
+</ul>
+<h4>6.1.2 RNC</h4>
+<div style="border: 1px solid; padding:10px; width: 85%; align: center; margin-left: auto; margin-right: auto; background: #d5d5d5;"><div style="margin-left: 5%"><pre>help
+     = element help
+         {
+           attribute format { xsd:token { pattern = "xml|text" } }?
+         }
+    </pre></div></div>
+<h4>6.1.3 Example: Get the help text</h4>
+<div style="margin-left: 5%; margin-right: 5%;">
+<i>Client</i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;help format="xml"/&gt;
+    </pre></div>
+<i>Server</i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;help_response status_text="OK"
+                    status="200"&gt;
+       &lt;delete_scan&gt;
+         &lt;attributes&gt;
+           &lt;scan_id&gt;ID of scan to delete&lt;/scan_id&gt;
+         &lt;/attributes&gt;
+         &lt;elements/&gt;
+         &lt;description&gt;Delete a finished scan&lt;/description&gt;
+       &lt;/delete_scan&gt;
+       &lt;help&gt;
+         &lt;attributes&gt;
+           &lt;format&gt;Help format. Could be text or xml&lt;/format&gt;
+         &lt;/attributes&gt;
+         &lt;elements/&gt;
+         &lt;description&gt;Print the commands help&lt;/description&gt;
+       &lt;/help&gt;
+       &lt;get_version&gt;
+         &lt;attributes/&gt;
+         &lt;elements/&gt;
+         &lt;description&gt;Return various versions&lt;/description&gt;
+       &lt;/get_version&gt;
+       &lt;stop_scan&gt;
+         &lt;attributes&gt;
+           &lt;scan_id&gt;ID of scan stop.&lt;/scan_id&gt;
+         &lt;/attributes&gt;
+         &lt;elements/&gt;
+         &lt;description&gt;Stop a currently running scan.&lt;/description&gt;
+       &lt;/stop_scan&gt;
+       &lt;get_scanner_details&gt;
+         &lt;attributes/&gt;
+         &lt;elements/&gt;
+         &lt;description&gt;Return scanner description and parameters&lt;/description&gt;
+       &lt;/get_scanner_details&gt;
+       &lt;start_scan&gt;
+         &lt;attributes&gt;
+           &lt;scan_id&gt;Optional UUID value to set as scan ID&lt;/scan_id&gt;
+           &lt;target&gt;Target hosts to scan in a comma-separated list&lt;/target&gt;
+           &lt;ports&gt;Ports list to scan as comma-separated list&lt;/ports&gt;
+           &lt;parallel&gt;Optional number of parallel scans to run&lt;/parallel&gt;
+         &lt;/attributes&gt;
+         &lt;elements&gt;
+           &lt;scanner_params&gt;
+             &lt;profile&gt;Scan profile&lt;/profile&gt;
+             &lt;target_port&gt;Target port&lt;/target_port&gt;
+             &lt;use_https&gt;Use HTTPS&lt;/use_https&gt;
+             &lt;w3af_timeout&gt;w3af scan timeout&lt;/w3af_timeout&gt;
+           &lt;/scanner_params&gt;
+         &lt;/elements&gt;
+         &lt;description&gt;Start a new scan&lt;/description&gt;
+       &lt;/start_scan&gt;
+       &lt;stop_scan&gt;
+         &lt;attributes&gt;
+           &lt;scan_id&gt;ID of scan to stop&lt;/scan_id&gt;
+         &lt;/attributes&gt;
+         &lt;description&gt;Stop a currently running scan&lt;/description&gt;
+       &lt;/stop_scan&gt;
+       &lt;get_scans&gt;
+         &lt;attributes&gt;
+           &lt;scan_id&gt;Mandatory ID of a specific scan to get&lt;/scan_id&gt;
+           &lt;details&gt;Whether to return the full scan report&lt;/details&gt;
+           &lt;progress&gt;Whether to return a detailed progress information&lt;/progress&gt;
+           &lt;pop_results&gt;Whether to remove the fetched results&lt;/pop_results&gt;
+           &lt;max_results&gt;
+             Maximum number of results to fetch. Only considered if pop_results is enabled. Default = None, which means that all available results are returned
+           &lt;/max_results&gt;
+         &lt;/attributes&gt;
+         &lt;elements/&gt;
+         &lt;description&gt;List the scans in buffer&lt;/description&gt;
+       &lt;/get_scans&gt;
+       &lt;get_performance&gt;
+         &lt;description&gt;Return system report&lt;/description&gt;
+         &lt;elements/&gt;
+         &lt;attributes&gt;
+           &lt;title&gt;Name of report.&lt;/title&gt;
+           &lt;start&gt;Time of first data point in report.&lt;/start&gt;
+           &lt;end&gt;Time of last data point in report.&lt;/end&gt;
+         &lt;/attributes&gt;
+       &lt;/get_performance&gt;
+     &lt;/help_response&gt;
+    </pre></div>
+</div>
+</div>
+<div>
+<div><h3 id="command_get_performance">6.2
+        Command <tt>get_performance</tt>
+</h3></div>
+<p>In short: Return performance information from an external program.</p>
+<h4>6.2.1 Structure</h4>
+<ul style="list-style: none">
+<li>
+<i>Command</i><ul style="list-style: none">
+<li>
+          @<b>start</b>
+          (<a href="#type_int">int</a>)
+          Interval start.
+          </li>
+<li>
+          @<b>end</b>
+          (<a href="#type_int">int</a>)
+          Interval end.
+          </li>
+<li>
+          @<b>titles</b>
+          (text)
+          Interval title to get.
+          </li>
+</ul>
+</li>
+<li style="margin-top: 15px;">
+<i>Response</i><ul style="list-style: none">
+<li>
+          @<b>status</b>
+          (<a href="#type_status">status</a>)
+          </li>
+<li>
+          @<b>status_text</b>
+          (text)
+          </li>
+</ul>
+</li>
+</ul>
+<h4>6.2.2 RNC</h4>
+<div style="border: 1px solid; padding:10px; width: 85%; align: center; margin-left: auto; margin-right: auto; background: #d5d5d5;"><div style="margin-left: 5%"><pre>get_performance
+     = element get_performance
+         {
+           attribute start { int }?
+           &amp; attribute end { int }?
+           &amp; attribute titles { text }?
+         }
+    </pre></div></div>
+<h4>6.2.3 Example: </h4>
+<div style="margin-left: 5%; margin-right: 5%;">
+<i>Client</i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;get_performance start="0"
+                      titles="mem"/&gt;
+    </pre></div>
+<i>Server</i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;help_response status="200"
+                    status_text="OK"&gt;Some output.&lt;/help_response&gt;
+    </pre></div>
+</div>
+</div>
+<div>
+<div><h3 id="command_get_scans">6.3
+        Command <tt>get_scans</tt>
+</h3></div>
+<p>In short: Get a stored scan in buffer.</p>
+<h4>6.3.1 Structure</h4>
+<ul style="list-style: none">
+<li>
+<i>Command</i><ul style="list-style: none">
+<li>
+          @<b>scan_id</b>
+          (<a href="#type_uuid">uuid</a>)
+          Scan UUID.
+          </li>
+<li>
+          @<b>details</b>
+          (<a href="#type_boolean">boolean</a>)
+          Whether to get full scan reports.
+          </li>
+<li>
+          @<b>progress</b>
+          (<a href="#type_boolean">boolean</a>)
+          Whether to return a detailed progress information.
+          </li>
+<li>
+          @<b>pop_results</b>
+          (<a href="#type_boolean">boolean</a>)
+          Whether to remove the fetched results.
+          </li>
+<li>
+          @<b>max_results</b>
+          (<a href="#type_int">int</a>)
+          Maximum number of results to fetch. Only considered if pop_results is enabled. Default = None, which means that all available results are returned.
+          </li>
+</ul>
+</li>
+<li style="margin-top: 15px;">
+<i>Response</i><ul style="list-style: none">
+<li>
+          @<b>status</b>
+          (<a href="#type_status">status</a>)
+          </li>
+<li>
+          @<b>status_text</b>
+          (text)
+          </li>
+<li>
+              &lt;<b>scan</b>&gt;
+              *<ul style="list-style: none">
+<li>
+          @<b>id</b>
+          (<a href="#type_uuid">uuid</a>)
+          </li>
+<li>
+          @<b>target</b>
+          (<a href="#type_string">string</a>)
+          </li>
+<li>
+          @<b>start_time</b>
+          (<a href="#type_epoch_time">epoch_time</a>)
+          </li>
+<li>
+          @<b>end_time</b>
+          (<a href="#type_epoch_time">epoch_time</a>)
+          </li>
+<li>
+          @<b>progress</b>
+          (<a href="#type_integer">integer</a>)
+          </li>
+<li>
+          @<b>status</b>
+          (<a href="#type_string">string</a>)
+          </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4>6.3.2 RNC</h4>
+<div style="border: 1px solid; padding:10px; width: 85%; align: center; margin-left: auto; margin-right: auto; background: #d5d5d5;"><div style="margin-left: 5%"><pre>get_scans
+     = element get_scans
+         {
+           attribute scan_id { uuid }?
+           &amp; attribute details { boolean }?
+           &amp; attribute progress { boolean }?
+           &amp; attribute pop_results { boolean }?
+           &amp; attribute max_results { int }?
+         }
+    </pre></div></div>
+<h4>6.3.3 Example: Get a scan report summary</h4>
+<div style="margin-left: 5%; margin-right: 5%;">
+<i>Client</i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;get_scans scan_id="f14747d3-a4d7-4e79-99bb-a0a1276cb78c"
+                details="1"
+                pop_results="0"/&gt;
+    </pre></div>
+<i>Server</i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;get_scans_response status_text="OK"
+                         status="200"&gt;
+       &lt;scan id="9750f1f8-07aa-49cc-9c31-2f9e469c8f65"
+             target="192.168.1.252"
+             end_time="1432824234"
+             progress="100"
+             status="finished"
+             start_time="1432824206"&gt;
+         &lt;results&gt;
+           ...
+           &lt;result host="192.168.1.252"
+                   hostname=""
+                   severity="2.5"
+                   port="443/tcp"
+                   test_id=""
+                   name="Path disclosure vulnerability"
+                   type="Alarm"&gt;
+             The URL: "https://192.168.1.252/" has a path disclosure vulnerability which discloses "/var/www/phpinfo.php" ...
+           &lt;/result&gt;
+         &lt;/results&gt;
+       &lt;/scan&gt;
+     &lt;/get_scans_response&gt;
+    </pre></div>
+</div>
+<h4>6.3.3 Example: Get a scan report summary</h4>
+<div style="margin-left: 5%; margin-right: 5%;">
+<i>Client</i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;get_scans scan_id="f14747d3-a4d7-4e79-99bb-a0a1276cb78c"
+                details="1"
+                pop_results="1"
+                max_results="1"/&gt;
+    </pre></div>
+<i>Server</i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;get_scans_response status_text="OK"
+                         status="200"&gt;
+       &lt;scan id="9750f1f8-07aa-49cc-9c31-2f9e469c8f65"
+             target="192.168.1.252"
+             end_time="1432824234"
+             progress="100"
+             status="finished"
+             start_time="1432824206"&gt;
+         &lt;results&gt;
+           &lt;result host="192.168.1.252"
+                   hostname=""
+                   severity="2.5"
+                   port="443/tcp"
+                   test_id=""
+                   name="Path disclosure vulnerability"
+                   type="Alarm"&gt;
+             The URL: "https://192.168.1.252/" has a path disclosure vulnerability which discloses "/var/www/phpinfo.php" ...
+           &lt;/result&gt;
+         &lt;/results&gt;
+       &lt;/scan&gt;
+     &lt;/get_scans_response&gt;
+    </pre></div>
+</div>
+<h4>6.3.3 Example: Get a scan progress summary</h4>
+<div style="margin-left: 5%; margin-right: 5%;">
+<i>Client</i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;get_scans scan_id="f14747d3-a4d7-4e79-99bb-a0a1276cb78c"
+                details="0"
+                progress="1"/&gt;
+    </pre></div>
+<i>Server</i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;get_scans_response status="200"
+                         status_text="OK"&gt;
+       &lt;scan end_time="0"
+             id="f14747d3-a4d7-4e79-99bb-a0a1276cb78c"
+             progress="17"
+             start_time="1592316467"
+             status="running"
+             target="192.168.56.100, 127.0.0.1"&gt;
+         &lt;progress&gt;
+           &lt;host name="127.0.0.1"&gt;2&lt;/host&gt;
+           &lt;host name="192.168.56.100"&gt;32&lt;/host&gt;
+           &lt;overall&gt;17&lt;/overall&gt;
+           &lt;count_alive&gt;0&lt;/count_alive&gt;
+           &lt;count_dead&gt;0&lt;/count_dead&gt;
+           &lt;count_excluded&gt;0&lt;/count_excluded&gt;
+           &lt;count_total&gt;2&lt;/count_total&gt;
+         &lt;/progress&gt;
+       &lt;/scan&gt;
+     &lt;/get_scans_response&gt;
+    </pre></div>
+</div>
+</div>
+<div>
+<div><h3 id="command_delete_scan">6.4
+        Command <tt>delete_scan</tt>
+</h3></div>
+<p>In short: Delete a finished scan.</p>
+<h4>6.4.1 Structure</h4>
+<ul style="list-style: none">
+<li>
+<i>Command</i><ul style="list-style: none"><li>
+          @<b>scan_id</b>
+          (<a href="#type_uuid">uuid</a>)
+          Scan UUID.
+          </li></ul>
+</li>
+<li style="margin-top: 15px;">
+<i>Response</i><ul style="list-style: none">
+<li>
+          @<b>status</b>
+          (<a href="#type_status">status</a>)
+          </li>
+<li>
+          @<b>status_text</b>
+          (text)
+          </li>
+</ul>
+</li>
+</ul>
+<h4>6.4.2 RNC</h4>
+<div style="border: 1px solid; padding:10px; width: 85%; align: center; margin-left: auto; margin-right: auto; background: #d5d5d5;"><div style="margin-left: 5%"><pre>delete_scan
+     = element delete_scan
+         {
+           attribute scan_id { uuid }?
+         }
+    </pre></div></div>
+<h4>6.4.3 Example: Delete a scan successfully</h4>
+<div style="margin-left: 5%; margin-right: 5%;">
+<i>Client</i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;delete_scan scan_id="013587e3-b4d7-8e79-9ebb-90a2133c338c"/&gt;
+    </pre></div>
+<i>Server</i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;delete_scan_response status_text="OK"
+                           status="200"/&gt;
+    </pre></div>
+</div>
+</div>
+<div>
+<div><h3 id="command_get_version">6.5
+        Command <tt>get_version</tt>
+</h3></div>
+<p>In short: Return various versions.</p>
+<h4>6.5.1 Structure</h4>
+<ul style="list-style: none">
+<li>
+<i>Command</i><ul style="list-style: none"><i>Empty single element.</i></ul>
+</li>
+<li style="margin-top: 15px;">
+<i>Response</i><ul style="list-style: none">
+<li>
+          @<b>status</b>
+          (<a href="#type_status">status</a>)
+          </li>
+<li>
+          @<b>status_text</b>
+          (text)
+          </li>
+<li>
+              &lt;<b>protocol</b>&gt;
+              <ul style="list-style: none">
+<li>
+              &lt;<b>name</b>&gt;
+              <ul style="list-style: none"></ul>
+</li>
+<li>
+              &lt;<b>version</b>&gt;
+              <ul style="list-style: none"></ul>
+</li>
+</ul>
+</li>
+<li>
+              &lt;<b>daemon</b>&gt;
+              <ul style="list-style: none">
+<li>
+              &lt;<b>name</b>&gt;
+              <ul style="list-style: none"></ul>
+</li>
+<li>
+              &lt;<b>version</b>&gt;
+              <ul style="list-style: none"></ul>
+</li>
+</ul>
+</li>
+<li>
+              &lt;<b>scanner</b>&gt;
+              <ul style="list-style: none">
+<li>
+              &lt;<b>name</b>&gt;
+              <ul style="list-style: none"></ul>
+</li>
+<li>
+              &lt;<b>version</b>&gt;
+              <ul style="list-style: none"></ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4>6.5.2 RNC</h4>
+<div style="border: 1px solid; padding:10px; width: 85%; align: center; margin-left: auto; margin-right: auto; background: #d5d5d5;"><div style="margin-left: 5%"><pre>get_version
+     = element get_version
+         {
+           ""
+         }
+    </pre></div></div>
+<h4>6.5.3 Example: Get protocol, scanner and daemon versions</h4>
+<div style="margin-left: 5%; margin-right: 5%;">
+<i>Client</i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;get_version/&gt;
+    </pre></div>
+<i>Server</i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;get_version_response status_text="OK"
+                           status="200"&gt;
+       &lt;protocol&gt;
+         &lt;version&gt;1.0&lt;/version&gt;
+         &lt;name&gt;OSP&lt;/name&gt;
+       &lt;/protocol&gt;
+       &lt;daemon&gt;
+         &lt;version&gt;generic version&lt;/version&gt;
+         &lt;name&gt;generic ospd&lt;/name&gt;
+       &lt;/daemon&gt;
+       &lt;scanner&gt;
+         &lt;version&gt;1.6.0.4&lt;/version&gt;
+         &lt;name&gt;w3af&lt;/name&gt;
+       &lt;/scanner&gt;
+     &lt;/get_version_response&gt;
+    </pre></div>
+</div>
+</div>
+<div>
+<div><h3 id="command_get_scanner_details">6.6
+        Command <tt>get_scanner_details</tt>
+</h3></div>
+<p>In short: Return scanner description and parameters.</p>
+<h4>6.6.1 Structure</h4>
+<ul style="list-style: none">
+<li>
+<i>Command</i><ul style="list-style: none"><li>
+          @<b>list_all</b>
+          (<a href="#type_boolean">boolean</a>)
+          List all available scanner parameters. Not only those visible to the client..
+          </li></ul>
+</li>
+<li style="margin-top: 15px;">
+<i>Response</i><ul style="list-style: none">
+<li>
+          @<b>status</b>
+          (<a href="#type_status">status</a>)
+          </li>
+<li>
+          @<b>status_text</b>
+          (text)
+          </li>
+<li>
+              &lt;<b>description</b>&gt;
+              <ul style="list-style: none"></ul>
+</li>
+<li>
+              &lt;<b>scanner_params</b>&gt;
+              <ul style="list-style: none"><li>
+              &lt;<b>scanner_param</b>&gt;
+              *<ul style="list-style: none">
+<li>
+          @<b>id</b>
+          (<a href="#type_string">string</a>)
+          </li>
+<li>
+          @<b>type</b>
+          (<a href="#type_string">string</a>)
+          </li>
+<li>
+              &lt;<b>name</b>&gt;
+              <ul style="list-style: none"></ul>
+</li>
+<li>
+              &lt;<b>description</b>&gt;
+              <ul style="list-style: none"></ul>
+</li>
+<li>
+              &lt;<b>default</b>&gt;
+              <ul style="list-style: none"></ul>
+</li>
+<li>
+              &lt;<b>mandatory</b>&gt;
+              <ul style="list-style: none"></ul>
+</li>
+</ul>
+</li></ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4>6.6.2 RNC</h4>
+<div style="border: 1px solid; padding:10px; width: 85%; align: center; margin-left: auto; margin-right: auto; background: #d5d5d5;"><div style="margin-left: 5%"><pre>get_scanner_details
+     = element get_scanner_details
+         {
+           attribute list_all { boolean }?
+         }
+    </pre></div></div>
+<h4>6.6.3 Example: Get scanner details</h4>
+<div style="margin-left: 5%; margin-right: 5%;">
+<i>Client</i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;get_scanner_details/&gt;
+    </pre></div>
+<i>Server</i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;get_scanner_details_response status_text="OK"
+                                   status="200"&gt;
+       &lt;description&gt;...&lt;/description&gt;
+       &lt;scanner_params&gt;
+         &lt;scanner_param id="profile"
+                        type="selection"&gt;
+           &lt;name&gt;Scan profile&lt;/name&gt;
+           &lt;description&gt;
+             Scan profiles are predefined set of plugins and customized configurations.
+           &lt;/description&gt;
+           &lt;default&gt;
+             fast_scan|fast_scan|audit_high_risk|full_audit|OWASP_TOP10|bruteforce|empty_profile|web_infrastructure|full_audit_spider_man|sitemap
+           &lt;/default&gt;
+         &lt;/scanner_param&gt;
+         &lt;scanner_param id="http_request_status"
+                        type="boolean"&gt;
+           &lt;name&gt;Show HTTP request status&lt;/name&gt;
+           &lt;description&gt;Whether to show the HTTP request's status in results&lt;/description&gt;
+           &lt;default&gt;0&lt;/default&gt;
+         &lt;/scanner_param&gt;
+         &lt;scanner_param id="dry_run"
+                        type="boolean"&gt;
+           &lt;name&gt;Dry Run&lt;/name&gt;
+           &lt;description&gt;Whether to dry run scan.&lt;/description&gt;
+           &lt;default&gt;0&lt;/default&gt;
+         &lt;/scanner_param&gt;
+         &lt;scanner_param id="http_request_headers"
+                        type="boolean"&gt;
+           &lt;name&gt;Show HTTP request headers&lt;/name&gt;
+           &lt;description&gt;Whether to show the HTTP request's headers in results&lt;/description&gt;
+           &lt;default&gt;0&lt;/default&gt;
+         &lt;/scanner_param&gt;
+         &lt;scanner_param id="http_response_status"
+                        type="boolean"&gt;
+           &lt;name&gt;Show HTTP response status&lt;/name&gt;
+           &lt;description&gt;Whether to show the HTTP response's status in results&lt;/description&gt;
+           &lt;default&gt;0&lt;/default&gt;
+         &lt;/scanner_param&gt;
+         &lt;scanner_param id="seed_path"
+                        type="string"&gt;
+           &lt;name&gt;Seed path&lt;/name&gt;
+           &lt;description&gt;Path to start with&lt;/description&gt;
+           &lt;default&gt;/&lt;/default&gt;
+         &lt;/scanner_param&gt;
+         &lt;scanner_param id="debug_mode"
+                        type="boolean"&gt;
+           &lt;name&gt;Debug Mode&lt;/name&gt;
+           &lt;description&gt;Whether to get extra scan debug information.&lt;/description&gt;
+           &lt;default&gt;0&lt;/default&gt;
+         &lt;/scanner_param&gt;
+         &lt;scanner_param id="target_port"
+                        type="integer"&gt;
+           &lt;name&gt;Target port&lt;/name&gt;
+           &lt;description&gt;Port on target host to scan&lt;/description&gt;
+           &lt;default&gt;80&lt;/default&gt;
+         &lt;/scanner_param&gt;
+         &lt;scanner_param id="use_https"
+                        type="boolean"&gt;
+           &lt;name&gt;Use HTTPS&lt;/name&gt;
+           &lt;description&gt;Whether the target application is running over HTTPS&lt;/description&gt;
+           &lt;default&gt;0&lt;/default&gt;
+         &lt;/scanner_param&gt;
+       &lt;/scanner_params&gt;
+     &lt;/get_scanner_details_response&gt;
+    </pre></div>
+</div>
+</div>
+<div>
+<div><h3 id="command_get_vts">6.7
+        Command <tt>get_vts</tt>
+</h3></div>
+<p>In short: Return information about vulnerability tests, if offered by scanner.</p>
+<h4>6.7.1 Structure</h4>
+<ul style="list-style: none">
+<li>
+<i>Command</i><ul style="list-style: none">
+<li>
+          @<b>vt_id</b>
+          (<a href="#type_vt_id">vt_id</a>)
+          Identifier for vulnerability test.
+          </li>
+<li>
+          @<b>filter</b>
+          (<a href="#type_string">string</a>)
+          Filter to get a sub group of a VT collection.
+          </li>
+<li>
+          @<b>details</b>
+          (<a href="#type_string">string</a>)
+          Return more details about vulnerability tests, if offered by the scanner.
+          </li>
+</ul>
+</li>
+<li style="margin-top: 15px;">
+<i>Response</i><ul style="list-style: none">
+<li>
+          @<b>status</b>
+          (<a href="#type_status">status</a>)
+          </li>
+<li>
+          @<b>status_text</b>
+          (text)
+          </li>
+<li>
+              &lt;<b>vts</b>&gt;
+              <ul style="list-style: none"><li>
+              &lt;<b>vt</b>&gt;
+              *<ul style="list-style: none">
+<li>
+          @<b>id</b>
+          (<a href="#type_vt_id">vt_id</a>)
+          </li>
+<li>
+              &lt;<b>name</b>&gt;
+              <ul style="list-style: none"></ul>
+</li>
+<li>
+              &lt;<a href="#element_"><b>creation_time</b></a>&gt;
+              <div style="margin-left: 15px; display: inline;">.</div>
+</li>
+<li>
+              &lt;<a href="#element_"><b>modification_time</b></a>&gt;
+              <div style="margin-left: 15px; display: inline;">.</div>
+</li>
+<li>
+              &lt;<b>params</b>&gt;
+              <ul style="list-style: none"><li>
+              &lt;<b>param</b>&gt;
+              <ul style="list-style: none">
+<li>
+          @<b>type</b>
+          (<a href="#type_string">string</a>)
+          </li>
+<li>
+          @<b>id</b>
+          (<a href="#type_string">string</a>)
+          </li>
+</ul>
+</li></ul>
+</li>
+<li>
+              &lt;<b>refs</b>&gt;
+              <ul style="list-style: none"><li>
+              &lt;<b>ref</b>&gt;
+              <ul style="list-style: none">
+<li>
+          @<b>type</b>
+          (<a href="#type_string">string</a>)
+          </li>
+<li>
+          @<b>id</b>
+          (<a href="#type_string">string</a>)
+          </li>
+</ul>
+</li></ul>
+</li>
+<li>
+              &lt;<b>dependencies</b>&gt;
+              <ul style="list-style: none"><li>
+              &lt;<b>dependency</b>&gt;
+              <ul style="list-style: none"><li>
+          @<b>vt_id</b>
+          (<a href="#type_vt_id">vt_id</a>)
+          </li></ul>
+</li></ul>
+</li>
+<li>
+              &lt;<b>summary</b>&gt;
+              <ul style="list-style: none"></ul>
+</li>
+<li>
+              &lt;<b>impact</b>&gt;
+              <ul style="list-style: none"></ul>
+</li>
+<li>
+              &lt;<b>affected</b>&gt;
+              <ul style="list-style: none"></ul>
+</li>
+<li>
+              &lt;<b>insight</b>&gt;
+              <ul style="list-style: none"></ul>
+</li>
+<li>
+              &lt;<b>solution</b>&gt;
+              <ul style="list-style: none">
+<li>
+          @<b>type</b>
+          (<a href="#type_string">string</a>)
+          Solution type, for example "VendorFix".
+          </li>
+<li>
+          @<b>method</b>
+          (<a href="#type_string">string</a>)
+          Solution method, for example "DebianAPTUpgrade".
+          </li>
+</ul>
+</li>
+<li>
+              &lt;<b>detection</b>&gt;
+              <ul style="list-style: none"></ul>
+</li>
+<li>
+              &lt;<b>severities</b>&gt;
+              <ul style="list-style: none"><li>
+              &lt;<b>severity</b>&gt;
+              <ul style="list-style: none">
+<li>
+          @<b>type</b>
+          (<a href="#type_string">string</a>)
+          </li>
+<li>
+          @<b>origin</b>
+          (<a href="#type_string">string</a>)
+          Optional reference to the origin of the severity.
+          </li>
+</ul>
+</li></ul>
+</li>
+<li>
+              &lt;<b>custom</b>&gt;
+              <ul style="list-style: none"></ul>
+</li>
+</ul>
+</li></ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4>6.7.2 RNC</h4>
+<div style="border: 1px solid; padding:10px; width: 85%; align: center; margin-left: auto; margin-right: auto; background: #d5d5d5;"><div style="margin-left: 5%"><pre>get_vts
+     = element get_vts
+         {
+           attribute vt_id { vt_id }?
+           &amp; attribute filter { string }?
+           &amp; attribute details { string }?
+         }
+    </pre></div></div>
+<h4>6.7.3 Example: Get information for all available vulnerability tests</h4>
+<div style="margin-left: 5%; margin-right: 5%;">
+<i>Client</i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;get_vts/&gt;
+    </pre></div>
+<i>Server</i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;get_vts_response status_text="OK"
+                       status="200"&gt;
+       &lt;vts total="10"&gt;
+         &lt;vt id="1.2.3.4.5"&gt;
+           &lt;name&gt;Check for presence of vulnerability X&lt;/name&gt;
+         &lt;/vt&gt;
+         &lt;vt id="ad45h67"&gt;
+           &lt;name&gt;Check for presence of vulnerability Y&lt;/name&gt;
+         &lt;/vt&gt;
+       &lt;/vts&gt;
+     &lt;/get_vts_response&gt;
+    </pre></div>
+</div>
+<h4>6.7.3 Example: Get information for a single vulnerability test</h4>
+<div style="margin-left: 5%; margin-right: 5%;">
+<i>Client</i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;get_vts vt_id="1.2.3.4.5"/&gt;
+    </pre></div>
+<i>Server</i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;get_vts_response status_text="OK"
+                       status="200"&gt;
+       &lt;vts total="10"&gt;
+         &lt;vt id="1.2.3.4.5"&gt;
+           &lt;name&gt;Check for presence of vulnerability X&lt;/name&gt;
+           &lt;refs&gt;
+             &lt;ref id="2014-16494"
+                  type="fedora"/&gt;
+             &lt;ref id="https://lists.fedoraproject.org/"
+                  type="url"/&gt;
+             &lt;ref id="CVE-2014-9116"
+                  type="cve"/&gt;
+           &lt;/refs&gt;
+           &lt;dependencies&gt;
+             &lt;dependency vt_id="1.3.6.1.4.1.25623.1.0.50282"/&gt;
+           &lt;/dependencies&gt;
+           &lt;creation_time&gt;1200603949&lt;/creation_time&gt;
+           &lt;modification_time&gt;1567429142&lt;/modification_time&gt;
+           &lt;summary&gt;Check the version of App&lt;/summary&gt;
+           &lt;affected&gt;App in OS v2&lt;/affected&gt;
+           &lt;insight&gt;App is a small but very powerful app.&lt;/insight&gt;
+           &lt;solution type="VendorFix"&gt;Please Install the Updated Packages.&lt;/solution&gt;
+           &lt;detection qod_type="package"&gt;
+             Get the installed version with the help of detect NVT and check if the version is vulnerable or not.
+           &lt;/detection&gt;
+           &lt;severities&gt;
+             &lt;severity type="cvss_base_v2"
+                       origin="CVE-2014-9116"&gt;AV:N/AC:L/Au:N/C:N/I:N/A:P&lt;/severity&gt;
+           &lt;/severities&gt;
+         &lt;/vt&gt;
+       &lt;/vts&gt;
+     &lt;/get_vts_response&gt;
+    </pre></div>
+</div>
+<h4>6.7.3 Example: Get information for a filtered collection of vulnerability test without details</h4>
+<div style="margin-left: 5%; margin-right: 5%;">
+<i>Client</i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;get_vts filter="modification_time&gt;201903150834;modification_time&lt;201903150835"
+              details="0"/&gt;
+    </pre></div>
+<i>Server</i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;get_vts_response status_text="OK"
+                       status="200"&gt;
+       &lt;vts total="10"
+            sent="1"&gt;
+         &lt;vt id="1.2.3.4.5"&gt;
+           &lt;name&gt;Check for presence of vulnerability X&lt;/name&gt;
+           &lt;refs&gt;
+             &lt;ref id="2014-16494"
+                  type="fedora"/&gt;
+             &lt;ref id="https://lists.fedoraproject.org/"
+                  type="url"/&gt;
+             &lt;ref id="CVE-2014-9116"
+                  type="cve"/&gt;
+           &lt;/refs&gt;
+           &lt;creation_time&gt;1200603949&lt;/creation_time&gt;
+           &lt;modification_time&gt;1567429142&lt;/modification_time&gt;
+           &lt;summary&gt;Check the version of App&lt;/summary&gt;
+           &lt;affected&gt;App in OS v2&lt;/affected&gt;
+           &lt;insight&gt;App is a small but very powerful app.&lt;/insight&gt;
+           &lt;solution type="VendorFix"&gt;Please Install the Updated Packages.&lt;/solution&gt;
+           &lt;detection qod_type="package"&gt;
+             Get the installed version with the help of detect NVT and check if the version is vulnerable or not.
+           &lt;/detection&gt;
+           &lt;severities&gt;
+             &lt;severity type="cvss_base_v2"
+                       origin="CVE-2014-9116"&gt;AV:N/AC:L/Au:N/C:N/I:N/A:P&lt;/severity&gt;
+           &lt;/severities&gt;
+         &lt;/vt&gt;
+       &lt;/vts&gt;
+     &lt;/get_vts_response&gt;
+    </pre></div>
+</div>
+<h4>6.7.3 Example: Get information for a vulnerability test with custom data</h4>
+<div style="margin-left: 5%; margin-right: 5%;">
+<i>Client</i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;get_vts vt_id="1.2.3.4.5"/&gt;
+    </pre></div>
+<i>Server</i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;get_vts_response status_text="OK"
+                       status="200"&gt;
+       &lt;vts total="10"&gt;
+         &lt;vt id="1.2.3.4.5"&gt;
+           &lt;name&gt;Check for presence of vulnerability X&lt;/name&gt;
+           &lt;custom&gt;
+             &lt;my_element&gt;First custom element&lt;/my_element&gt;
+             &lt;my_other_element&gt;second custom element&lt;/my_other_element&gt;
+           &lt;/custom&gt;
+         &lt;/vt&gt;
+       &lt;/vts&gt;
+     &lt;/get_vts_response&gt;
+    </pre></div>
+</div>
+<h4>6.7.3 Example: Get information for a vulnerability test with VT parameters data</h4>
+<div style="margin-left: 5%; margin-right: 5%;">
+<i>Client</i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;get_vts vt_id="1.2.3.4.5"/&gt;
+    </pre></div>
+<i>Server</i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;get_vts_response status_text="OK"
+                       status="200"&gt;
+       &lt;vts total="10"&gt;
+         &lt;vt id="1.2.3.4.5"&gt;
+           &lt;name&gt;Check for presence of vulnerability X&lt;/name&gt;
+           &lt;params&gt;
+             &lt;param id="timeout"
+                    type="integer"&gt;
+               &lt;name&gt;Timeout&lt;/name&gt;
+               &lt;description&gt;Vulnerability Test Timeout&lt;/description&gt;
+               &lt;default&gt;300&lt;/default&gt;
+             &lt;/param&gt;
+             &lt;param id="scan.udp"
+                    type="boolean"&gt;
+               &lt;name&gt;Scan UDP&lt;/name&gt;
+               &lt;description/&gt;
+               &lt;default&gt;1&lt;/default&gt;
+             &lt;/param&gt;
+           &lt;/params&gt;
+           &lt;refs&gt;
+             &lt;ref type="cve"
+                  id="CVE-2010-4480"/&gt;
+             &lt;ref type="url"
+                  id="http://www.exploit-db.com/exploits/15699/"/&gt;
+             &lt;ref type="url"
+                  id="http://www.vupen.com/english/advisories/2010/3133"/&gt;
+           &lt;/refs&gt;
+           &lt;custom&gt;
+             &lt;my_element&gt;First custom element&lt;/my_element&gt;
+             &lt;my_other_element&gt;second custom element&lt;/my_other_element&gt;
+           &lt;/custom&gt;
+         &lt;/vt&gt;
+       &lt;/vts&gt;
+     &lt;/get_vts_response&gt;
+    </pre></div>
+</div>
+</div>
+<div>
+<div><h3 id="command_start_scan">6.8
+        Command <tt>start_scan</tt>
+</h3></div>
+<p>In short: Start a new scan.</p>
+<h4>6.8.1 Structure</h4>
+<ul style="list-style: none">
+<li>
+<i>Command</i><ul style="list-style: none">
+<li>
+          @<b>target</b>
+          (<a href="#type_string">string</a>)
+          Target hosts to scan in a comma-separated list.
+          </li>
+<li>
+          @<b>ports</b>
+          (<a href="#type_string">string</a>)
+          Ports list to scan as comma-separated list.
+          </li>
+<li>
+          @<b>scan_id</b>
+          (<a href="#type_uuid">uuid</a>)
+          Optional UUID value to use as scan ID.
+          </li>
+<li>
+          @<b>parallel</b>
+          (<a href="#type_integer">integer</a>)
+          Optional number of parallel scan to run.
+          </li>
+<li>
+              &lt;<b>scanner_params</b>&gt;
+              <div style="margin-left: 15px; display: inline;">Contains elements that represent scanner specific parameters.</div>
+<ul style="list-style: none"></ul>
+</li>
+<li>
+              &lt;<b>vt_selection</b>&gt;
+              <div style="margin-left: 15px; display: inline;">Contains elements that represent a Vulnerability Test or a collection of Vulnerability Tests to be executed and their parameters.</div>
+<ul style="list-style: none"></ul>
+</li>
+<li>
+              &lt;<b>targets</b>&gt;
+              <div style="margin-left: 15px; display: inline;">Contains elements that represent a target to execute a scan against. If target and port attributes are present this element is not take into account.</div>
+<ul style="list-style: none"></ul>
+</li>
+</ul>
+</li>
+<li style="margin-top: 15px;">
+<i>Response</i><ul style="list-style: none">
+<li>
+          @<b>status</b>
+          (<a href="#type_status">status</a>)
+          </li>
+<li>
+          @<b>status_text</b>
+          (text)
+          </li>
+<li>
+              &lt;<b>id</b>&gt;
+              <div style="margin-left: 15px; display: inline;">New scan's UUID.</div>
+<ul style="list-style: none"></ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4>6.8.2 RNC</h4>
+<div style="border: 1px solid; padding:10px; width: 85%; align: center; margin-left: auto; margin-right: auto; background: #d5d5d5;"><div style="margin-left: 5%"><pre>start_scan
+     = element start_scan
+         {
+           attribute target { string }?
+           &amp; attribute ports { string }?
+           &amp; attribute scan_id { uuid }?
+           &amp; attribute parallel { integer }?
+           &amp; start_scan_scanner_params
+           &amp; start_scan_vt_selection
+           &amp; start_scan_targets
+         }
+    
+    start_scan_scanner_params
+     = element scanner_params
+         {
+         }
+    
+    start_scan_vt_selection
+     = element vt_selection
+         {
+         }
+    
+    start_scan_targets
+     = element targets
+         {
+         }
+    </pre></div></div>
+<h4>6.8.3 Example: Start a new scan. Legacy mode</h4>
+<div style="margin-left: 5%; margin-right: 5%;">
+<i>Client</i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;start_scan target="localhost"
+                 ports="80, 443"&gt;
+       &lt;scanner_params&gt;
+         &lt;target_port&gt;443&lt;/target_port&gt;
+         &lt;use_https&gt;1&lt;/use_https&gt;
+         &lt;profile&gt;fast_scan&lt;/profile&gt;
+       &lt;/scanner_params&gt;
+     &lt;/start_scan&gt;
+    </pre></div>
+<i>Server</i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;start_scan_response status_text="OK"
+                          status="200"&gt;
+       &lt;id&gt;2f616d53-595f-4785-9b97-4395116ca118&lt;/id&gt;
+     &lt;/start_scan_response&gt;
+    </pre></div>
+</div>
+<h4>6.8.3 Example: Start a new scan with multi-targets running simultaneously. Each one has a different port list and one of them has credentials for authenticated scans.</h4>
+<div style="margin-left: 5%; margin-right: 5%;">
+<i>Client</i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;start_scan parallel="10"&gt;
+       &lt;scanner_params&gt;...&lt;/scanner_params&gt;
+       &lt;vt_selection&gt;....&lt;/vt_selection&gt;
+       &lt;targets&gt;
+         &lt;target&gt;...&lt;/target&gt;
+         &lt;target&gt;
+           &lt;hosts&gt;192.168.1.0/24&lt;/hosts&gt;
+           &lt;ports&gt;1,2,3,80,443&lt;/ports&gt;
+           &lt;credentials&gt;...&lt;/credentials&gt;
+           &lt;exclude_hosts&gt;192.168.1.10-15&lt;/exclude_hosts&gt;
+           &lt;finished_hosts&gt;192.168.1.1-3&lt;/finished_hosts&gt;
+         &lt;/target&gt;
+       &lt;/targets&gt;
+     &lt;/start_scan&gt;
+    </pre></div>
+<i>Server</i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;start_scan_response status_text="OK"
+                          status="200"&gt;
+       &lt;id&gt;2f616d53-595f-4785-9b97-4395116ca118&lt;/id&gt;
+     &lt;/start_scan_response&gt;
+    </pre></div>
+</div>
+</div>
+<div>
+<div><h3 id="command_stop_scan">6.9
+        Command <tt>stop_scan</tt>
+</h3></div>
+<p>In short: Stop a currently running scan.</p>
+<h4>6.9.1 Structure</h4>
+<ul style="list-style: none">
+<li>
+<i>Command</i><ul style="list-style: none"><li>
+          @<b>scan_id</b>
+          (<a href="#type_uuid">uuid</a>)
+          ID of scan to stop.
+          </li></ul>
+</li>
+<li style="margin-top: 15px;">
+<i>Response</i><ul style="list-style: none">
+<li>
+          @<b>status</b>
+          (<a href="#type_status">status</a>)
+          </li>
+<li>
+          @<b>status_text</b>
+          (text)
+          </li>
+</ul>
+</li>
+</ul>
+<h4>6.9.2 RNC</h4>
+<div style="border: 1px solid; padding:10px; width: 85%; align: center; margin-left: auto; margin-right: auto; background: #d5d5d5;"><div style="margin-left: 5%"><pre>stop_scan
+     = element stop_scan
+         {
+           attribute scan_id { uuid }?
+         }
+    </pre></div></div>
+<h4>6.9.3 Example: Stop a scan</h4>
+<div style="margin-left: 5%; margin-right: 5%;">
+<i>Client</i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;stop_scan scan_id="6ec1732c-10e8-448c-90fb-7797ad47ada2"/&gt;
+    </pre></div>
+<i>Server</i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;stop_scan_response status_text="OK"
+                         status="200"/&gt;
+    </pre></div>
+</div>
+</div>
+<div>
+<div><h3 id="command_get_memory_usage">6.10
+        Command <tt>get_memory_usage</tt>
+</h3></div>
+<p>In short: Return memory usage information of the osp daemon.</p>
+<h4>6.10.1 Structure</h4>
+<ul style="list-style: none">
+<li>
+<i>Command</i><ul style="list-style: none"><li>
+          @<b>unit</b>
+          (text)
+          Size unit for the memory. b for bytes, kb for kilobytes and mb for megabytes..
+          </li></ul>
+</li>
+<li style="margin-top: 15px;">
+<i>Response</i><ul style="list-style: none">
+<li>
+          @<b>status</b>
+          (<a href="#type_status">status</a>)
+          </li>
+<li>
+          @<b>status_text</b>
+          (text)
+          </li>
+</ul>
+</li>
+</ul>
+<h4>6.10.2 RNC</h4>
+<div style="border: 1px solid; padding:10px; width: 85%; align: center; margin-left: auto; margin-right: auto; background: #d5d5d5;"><div style="margin-left: 5%"><pre>get_memory_usage
+     = element get_memory_usage
+         {
+           attribute unit { text }?
+         }
+    </pre></div></div>
+<h4>6.10.3 Example: </h4>
+<div style="margin-left: 5%; margin-right: 5%;">
+<i>Client</i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;get_memory_usage unit="kb"/&gt;
+    </pre></div>
+<i>Server</i><div style="margin-left: 2%; margin-right: 2%;"><pre> &lt;get_memory_usage status="200"
+                       status_text="OK"&gt;
+       &lt;processes&gt;
+         &lt;process name="MainProcess"
+                  pid="12345"&gt;
+           &lt;rss&gt;127182&lt;/rss&gt;
+           &lt;vss&gt;239616&lt;/vss&gt;
+           &lt;shared&gt;135168&lt;/shared&gt;
+         &lt;/process&gt;
+         &lt;process name="Process-1"
+                  pid="23456"&gt;...&lt;/process&gt;
+       &lt;/processes&gt;
+     &lt;/get_memory_usage&gt;
+    </pre></div>
+</div>
+</div>
+<h2 id="parameter_summary">7 Summary of Scanner Parameters Types</h2>
+<table>
+<tr>
+<td><a href="#type_integer">integer</a></td>
+<td><div style="margin-left: 15px;">An integer value.</div></td>
+</tr>
+<tr>
+<td><a href="#type_string">string</a></td>
+<td><div style="margin-left: 15px;">A string.</div></td>
+</tr>
+<tr>
+<td><a href="#type_boolean">boolean</a></td>
+<td><div style="margin-left: 15px;">0 or 1.</div></td>
+</tr>
+<tr>
+<td><a href="#type_selection">selection</a></td>
+<td><div style="margin-left: 15px;">A value out of the | separated values list.</div></td>
+</tr>
+<tr>
+<td><a href="#type_credential_up">credential_up</a></td>
+<td><div style="margin-left: 15px;">The username:password of a credential.</div></td>
+</tr>
+<tr>
+<td><a href="#type_file">file</a></td>
+<td><div style="margin-left: 15px;">A file's content.</div></td>
+</tr>
+<tr>
+<td><a href="#type_ovaldef_file">ovaldef_file</a></td>
+<td><div style="margin-left: 15px;">An ovaldef file's content that is base64 encoded.</div></td>
+</tr>
+</table>
+<h2 id="changes">
+      8 Compatibility Changes in Version 20.08</h2>
+<div>
+<div><h3>8.1
+          Change in <tt>GET_VTS</tt>
+</h3></div>
+<p>In short: Returned object extended with solution method.</p>
+<p><p>
+      The element SOLUTION of the returned VT object has a new optional attribute METHOD
+      that describes the solution method in case the VT offers such a detail.
+    </p></p>
+</div>
+<div>
+<div><h3>8.2
+          Change in <tt>GET_VTS</tt>
+</h3></div>
+<p>In short: Returned object extended with amount of VTS.</p>
+<p><p>
+      The main element vts has the new TOTAL attribute with the amount of vts in the collection and the new optional SENT attribute with the amount of vts which matched a given filter.
+    </p></p>
+</div>
+<div>
+<div><h3>8.3
+          Change in <tt>GET_VTS</tt>
+</h3></div>
+<p>In short: Add attribute DETAILS.</p>
+<p><p>
+      The new attribute DETAILS allows to get more details about a vulnerability test if the scanner support it. By default is set True, and for a lighter response must be explicitly set to False.
+    </p></p>
+</div>
+<div>
+<div><h3>8.4
+          Change in <tt>GET_VTS</tt>
+</h3></div>
+<p>In short: Add attribute SHA256_HASH.</p>
+<p><p>
+      The new attribute SHA256_HASH is calculated from the vulnerability test OID, modification time and VT preferences, sorted by OID. The new attribute is helpful for feed integrity check.
+    </p></p>
+</div>
+<div>
+<div><h3>8.5
+          Change in <tt>GET_VTS</tt>
+</h3></div>
+<p>In short: Add attribute VTS_VERSION.</p>
+<p><p>
+      The feed version is included in the get_vts command response.
+    </p></p>
+</div>
+<div>
+<div><h3>8.6
+          Change in <tt>START_SCAN</tt>
+</h3></div>
+<p>In short: Add support for target options.</p>
+<p><p>Target element receive new target options reverse_lookup_only, reverse_lookup_unify and alive_test.
+    </p></p>
+</div>
+<div>
+<div><h3>8.7
+          Change in <tt>GET_SCANS</tt>
+</h3></div>
+<p>In short: Add scan progress details.</p>
+<p><p>New attribute PROGRESS to specify whether to return a detailed progress information.
+    </p></p>
+</div>
+<div style="text-align: center; padding: 5px;">
+                  This file was automatically generated.
+                </div>
+</td></tr></table></div></body>
+</html>

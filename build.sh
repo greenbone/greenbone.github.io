@@ -38,24 +38,31 @@ done
 cd "${WORK_DIR}"
 
 dl_gmp_doc() {
-    runID=$(gh run list -R greenbone/gvmd -L 10 -w build-docs.yml --json 'databaseId' -b $1 -q 'first(.[]).databaseId')
-    gh run download $runID -D "${GEN_DIR}/gmp_doc/tmp/$1" -R greenbone/gvmd
-    mkdir -p "${GEN_DIR}/protocol/$1/"
-    mv "${GEN_DIR}/gmp_doc/tmp/$1/gmp.html/gmp.html" "${GEN_DIR}/protocol/$1/"
-    rm -rf "${GEN_DIR}/gmp_doc/tmp/$1/gmp.html"
+    GMP_VERSION=$1
+    runID=$(gh run list -R greenbone/gvmd -L 10 -w build-docs.yml --json 'databaseId' -b ${GMP_VERSION} -q 'first(.[]).databaseId')
+    if [ "${GMP_VERSION}" == "main" ]; then
+        GMP_VERSION=unstable
+    fi
+    gh run download $runID -D "${GEN_DIR}/gmp_doc/tmp/${GMP_VERSION}" -R greenbone/gvmd
+    mkdir -p "${GEN_DIR}/protocol/${GMP_VERSION}/"
+    mv "${GEN_DIR}/gmp_doc/tmp/${GMP_VERSION}/gmp.html/gmp.html" "${GEN_DIR}/protocol/${GMP_VERSION}/"
+    rm -rf "${GEN_DIR}/gmp_doc/tmp/${GMP_VERSION}/gmp.html"
 }
 dl_gmp_doc "oldstable"
 dl_gmp_doc "stable"
 dl_gmp_doc "main"
 
-
 gh repo clone greenbone/ospd-openvas
 cd ospd-openvas
 dl_osp_doc() {
-    git switch $1
+    OSP_VERSION=$1
+    git switch ${OSP_VERSION}
+    if [ "${OSP_VERSION}" == "main" ]; then
+        GMP_VERSION=unstable
+    fi
     docs/generate
-    mkdir -p "${GEN_DIR}/protocol/$1"
-    mv docs/osp.html "${GEN_DIR}/protocol/$1/"
+    mkdir -p "${GEN_DIR}/protocol/${GMP_VERSION}"
+    mv docs/osp.html "${GEN_DIR}/protocol/${GMP_VERSION}/"
 }
 dl_osp_doc main
 dl_osp_doc stable
@@ -73,11 +80,11 @@ cp -ar build/html/. "${GEN_DIR}/" || cp -ar _build/html/. "${GEN_DIR}/" || (echo
 
 cd "${GEN_DIR}" || (echo "no ${GEN_DIR} found" && exit 1)
 git add .
-git commit -m "Update docs - Build $(date '+%Y%m%d%H%M%S')"
+git commit -m "Update docs - Build $(date '+%Y%m%d%H%M%S')" || true
 git branch --set-upstream-to=origin/gh-pages gh-pages
 git push
 
 cd "${WORK_DIR}"
 git add .
-git commit -m "Update docs - Build $(date '+%Y%m%d%H%M%S')"
+git commit -m "Update docs - Build $(date '+%Y%m%d%H%M%S')" || true
 git push

@@ -1,11 +1,12 @@
 Greenbone – Documentation
-========================================
+=========================
 
-Entrypoint for the Greenbone Documentations
+How-To's and API Documentation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- `python-gvm </python-gvm>`_
-- `gvm-tools </gvm-tools>`_
-- `source-build </source-build>`_
+- `API: python-gvm </python-gvm>`_
+- `How-To use gvm-tools </gvm-tools>`_
+- `How-To build Greenbone Source Edition (stable) </source-build>`_
 
 GMP Protocol:
 ^^^^^^^^^^^^^

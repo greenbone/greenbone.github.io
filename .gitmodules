@@ -10,3 +10,6 @@
 	path = source-build/docs
 	branch=main
 	url = git@github.com:greenbone/docs.git
+[submodule "pontos"]
+	path = pontos
+	url = git@github.com:greenbone/pontos.git

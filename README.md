@@ -1,3 +1,4 @@
-# :warning: how to use this repo
+# greenbone.github.io
 
-So you are able to trigger the update and build via workflow under actions.
+Currently this repo contains a static html page that redirects to the Greenbone
+Community Documentation at https://greenbone.github.io/docs/latest/
